@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PiedraPapelTijeras</string>
+    <string name="PiedraPapelTijeras" />
+    <string name="jugar_desc">Enviar</string>
+    <string name="jugar_text">Jugar</string>
+    <string name="top_10_text">Top 10</string>
+    <string name="login_text">Login</string>
+    <string name="login_textField_label">LoginLabel</string>
+    <string name="piedra_text_desc">piedra</string>
+    <string name="papel_text_desc">papel</string>
+    <string name="tijeras_text_desc">tijeras</string>
+    <string name="tres">3</string>
+    <string name="un_dos_tres">"1..2..3 piedra papel o tijeras 1...2... "</string>
+    <string name="jugada_maquina">"Elección de manitas"</string>
+    <string name="interrogante_text_desc">"Interrogante"</string>
+
+
+</resources>
