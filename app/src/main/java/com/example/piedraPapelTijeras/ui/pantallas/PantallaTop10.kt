@@ -1,6 +1,7 @@
 package com.example.piedraPapelTijeras.ui.pantallas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -24,12 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.ui.AgregarBoton
+import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.ui.componentes.formatTimestamp
+import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 
 @Composable
-fun PantallaTop10(top10ViewModel: Top10Viewmodel, navController: NavHostController) {
+fun PantallaTop10(top10ViewModel: Top10Viewmodel, navController: NavHostController, musicViewModel: MusicViewModel) {
 
     LaunchedEffect(key1 = Unit) {
         top10ViewModel.cargarTop10()
@@ -37,63 +40,64 @@ fun PantallaTop10(top10ViewModel: Top10Viewmodel, navController: NavHostControll
 
     val top10 by top10ViewModel.top10.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFA8E6CF))
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFA8E6CF))
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        Text(
-            text = "Top 10 Jugadores",
-            fontSize = 40.sp,
-            modifier = Modifier.padding(16.dp)
-        )
+            Text(
+                text = "Top 10 Jugadores",
+                fontSize = 40.sp,
+                modifier = Modifier.padding(16.dp)
+            )
 
-        Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-        // Lista de jugadores
-        top10.forEachIndexed { index, jugador ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
+            // Lista de jugadores
+            top10.forEachIndexed { index, jugador ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "${index + 1}. ${jugador.mail}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "Último login: ${formatTimestamp(jugador.ultimaFecha)}",
+                            fontSize = 14.sp,
+                            color = Color.DarkGray
+                        )
+                    }
                     Text(
-                        text = "${index + 1}. ${jugador.mail}",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        text = "Último login: ${formatTimestamp(jugador.ultimaFecha)}",
-                        fontSize = 14.sp,
-                        color = Color.DarkGray
+                        text = jugador.puntuacion.toString(),
+                        fontSize = 24.sp
                     )
                 }
-                Text(
-                    text = jugador.puntuacion.toString(),
-                    fontSize = 24.sp
-                )
+                Divider()
             }
-            Divider()
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Botón para volver
+            AgregarBoton(
+                onclick = { navController.popBackStack() },
+                icon = null,
+                des = "Volver",
+                text = "Volver",
+                fontsize = 40,
+                modifier = Modifier.Companion.width(200.dp)
+
+            )
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        // Botón para volver
-        AgregarBoton(
-            onclick = { navController.popBackStack() },
-            icon = null,
-            des = "Volver",
-            text = "Volver",
-            fontsize = 40,
-            modifier = Modifier.Companion.width(200.dp)
-
-        )
-    }
 }
 
 

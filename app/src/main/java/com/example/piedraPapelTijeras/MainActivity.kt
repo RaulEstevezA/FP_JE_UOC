@@ -14,12 +14,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.piedraPapelTijeras.ui.componentes.BackgroundMusicPlayer
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaJuego
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaLogin
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaPrincipal
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaTop10
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
+import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +51,10 @@ class MainActivity : ComponentActivity() {
                         factory = Injeccion.provideLoginViewModelFactory(context = applicationContext)
                     )
 
+                    val musicViewModel: MusicViewModel = viewModel()
+
+                    BackgroundMusicPlayer(musicViewModel = musicViewModel)
+
                     NavHost(
                         navController = navController,
                         startDestination = "principal"
@@ -56,27 +62,30 @@ class MainActivity : ComponentActivity() {
                         composable("principal") {
                             PantallaPrincipal(
                                 navController = navController,
-
+                                musicViewModel = musicViewModel
                             )
                         }
                         composable("login") {
                             PantallaLogin(
                                 loginViewModel = loginViewModel,
                                 top10ViewModel = top10ViewModel,
-                                navController = navController
+                                navController = navController,
+                                musicViewModel = musicViewModel
                             )
 
                         }
                         composable("juego") {
                             PantallaJuego(
                                 juegoViewModel = juegoViewModel,
-                                navController = navController
+                                navController = navController,
+                                musicViewModel = musicViewModel
                             )
                         }
                         composable("top10") {
                             PantallaTop10(
                                 top10ViewModel = top10ViewModel,
-                                navController = navController
+                                navController = navController,
+                                musicViewModel = musicViewModel
                             )
                         }
 

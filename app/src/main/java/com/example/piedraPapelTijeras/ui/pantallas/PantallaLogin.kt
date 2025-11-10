@@ -1,6 +1,7 @@
 package com.example.piedraPapelTijeras.ui.pantallas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,51 +36,57 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
+import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
+import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 @Composable
 //fun PantallaLogin()
-fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel, navController: NavHostController)
+fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel, navController: NavHostController, musicViewModel: MusicViewModel)
 {
 
     var textLogin by rememberSaveable { mutableStateOf("a@b.es") }
     val registroNuevo by loginViewModel.registroNuevo.collectAsState()
     val dialogoTexto by loginViewModel.dialogoTexto.collectAsState()
 
-
-
-
-
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .background(Color(0xFFA8E6CF))
+    ) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 16.dp, top = 40.dp)
+        ) {
+            CambiarBotonMusica(musicViewModel = musicViewModel)
+        }
 
     Column(
         modifier = Modifier.Companion.fillMaxSize()
-            .background(Color(0xFFA8E6CF))
             .padding(10.dp, 100.dp, 10.dp, 10.dp),
 
         horizontalAlignment = Alignment.Companion.CenterHorizontally,
-    ){
+    ) {
 
         TextField(
 
             value = textLogin,
-            onValueChange = {textLogin = it},
+            onValueChange = { textLogin = it },
             colors = TextFieldDefaults.colors(
 
                 unfocusedContainerColor = Color.Unspecified,
                 disabledContainerColor = Color.Gray,
                 errorContainerColor = Color.Red,
             ),
-            label = {stringResource(R.string.login_textField_label)},
+            label = { stringResource(R.string.login_textField_label) },
 
 
-        )
+            )
 
 
 
         Spacer(modifier = Modifier.Companion.height(50.dp))
-
-
 
 
         // boton Login salta a jugar si exste el ussuario sino abre AlertDialog
@@ -88,10 +95,10 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
             onclick = {
                 loginViewModel.cargarJugador(
                     textLogin,
-                    usuarioExiste = {navController.navigate("juego")},
+                    usuarioExiste = { navController.navigate("juego") },
 
                     )
-                },
+            },
             icon = Icons.Default.PlayArrow,
             des = stringResource(R.string.jugar_desc),
             text = stringResource(R.string.login_text),
@@ -118,7 +125,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
                         loginViewModel.añadirJugador(
                             email = currentTextLogin,
                             onJuegoNavigate = { navController.navigate("juego") },
-                            onTop10Refresh = {top10ViewModel.cargarTop10()}
+                            onTop10Refresh = { top10ViewModel.cargarTop10() }
                         )
                         loginViewModel.cerrarDialogo()
                     }) {
@@ -131,10 +138,9 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
                     }
                 }
             )
+            }
+
         }
-
-
-
 
     }
 }

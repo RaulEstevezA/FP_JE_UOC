@@ -2,7 +2,10 @@ package com.example.piedraPapelTijeras.ui.pantallas
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,51 +26,64 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
+import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
+import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 
 
 @Composable
-fun PantallaPrincipal(navController: NavHostController ) {
+fun PantallaPrincipal(navController: NavHostController, musicViewModel: MusicViewModel ) {
 
-    Column(
-        modifier = Modifier.Companion.fillMaxSize()
+    Box(
+        modifier = Modifier.fillMaxSize()
             .background(Color(0xFFA8E6CF))
-            .padding(10.dp, 100.dp, 10.dp, 10.dp),
-
-        horizontalAlignment = Alignment.Companion.CenterHorizontally,
-
-
+    ) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 16.dp, top = 40.dp)
         ) {
-        // pantalla inicio
-        Image(
-            painter = painterResource(R.drawable.image_inicio),
-            contentDescription = null,
-            modifier = Modifier.Companion.fillMaxWidth().size(300.dp),
-        )
-        Spacer(modifier = Modifier.Companion.height(50.dp))
-        //Boton jugar to Login
-        AgregarBoton(
-            onclick = { navController.navigate("login") },
-            icon = Icons.AutoMirrored.Filled.Send,
-            des = stringResource(R.string.jugar_desc),
-            text = stringResource(R.string.jugar_text),
-            modifier = Modifier.Companion.width(200.dp)
-        )
+            CambiarBotonMusica(musicViewModel = musicViewModel)
+        }
 
-        Spacer(modifier = Modifier.Companion.height(50.dp))
-        //Boton Top10
-        AgregarBoton(
-            onclick = { navController.navigate("top10") },
-            icon = Icons.AutoMirrored.Filled.Send,
-            des = stringResource(R.string.jugar_desc),
-            text = stringResource(R.string.top_10_text),
-            modifier = Modifier.Companion.width(200.dp)
-        )
+        Column(
+            modifier = Modifier.Companion.fillMaxSize()
+                .padding(10.dp, 100.dp, 10.dp, 10.dp),
+
+            horizontalAlignment = Alignment.Companion.CenterHorizontally,
 
 
+            ) {
+            Spacer(modifier = Modifier.Companion.height(25.dp))
+            // pantalla inicio
+            Image(
+                painter = painterResource(R.drawable.image_inicio),
+                contentDescription = null,
+                modifier = Modifier.Companion.fillMaxWidth().size(300.dp),
+            )
+            Spacer(modifier = Modifier.Companion.height(50.dp))
+            //Boton jugar to Login
+            AgregarBoton(
+                onclick = { navController.navigate("login") },
+                icon = Icons.AutoMirrored.Filled.Send,
+                des = stringResource(R.string.jugar_desc),
+                text = stringResource(R.string.jugar_text),
+                modifier = Modifier.Companion.width(200.dp)
+            )
+
+            Spacer(modifier = Modifier.Companion.height(50.dp))
+            //Boton Top10
+            AgregarBoton(
+                onclick = { navController.navigate("top10") },
+                icon = Icons.AutoMirrored.Filled.Send,
+                des = stringResource(R.string.jugar_desc),
+                text = stringResource(R.string.top_10_text),
+                modifier = Modifier.Companion.width(200.dp)
+            )
+
+
+        }
     }
-
-
 }
 
 

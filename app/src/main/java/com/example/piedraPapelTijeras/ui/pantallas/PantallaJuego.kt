@@ -3,6 +3,7 @@ package com.example.piedraPapelTijeras.ui.pantallas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,12 +39,14 @@ import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.data.model.EnumElegirJugada
 import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.componentes.AgregarSurface
+import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
+import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 
 
 @Composable
 
-fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostController){
+fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostController, musicViewModel: MusicViewModel){
 
     var jugadaJugador: EnumElegirJugada by remember { mutableStateOf(EnumElegirJugada.PIEDRA) }
 
@@ -52,11 +55,21 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
     val mostrarDialogo by juegoViewModel.mostrarDialogo.collectAsState()
     val resultado by juegoViewModel.resultado.collectAsState()
 
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .background(Color(0xFFA8E6CF))
+    ) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 16.dp, top = 40.dp)
+        ) {
+            CambiarBotonMusica(musicViewModel = musicViewModel)
+        }
 
     Column(
         modifier = Modifier.Companion
             .fillMaxSize()
-            .background(Color(0xFFA8E6CF))
             .padding(10.dp, 80.dp, 10.dp, 10.dp),
 
         horizontalAlignment = Alignment.Companion.CenterHorizontally,
@@ -74,7 +87,6 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
             fontSize = 50.sp
 
         )
-
 
 
         // Text elegir jugada
@@ -140,7 +152,7 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
         //Boton jugar
         AgregarBoton(
 
-            onclick = {juegoViewModel.jugar(jugadaJugador) },
+            onclick = { juegoViewModel.jugar(jugadaJugador) },
             icon = null,
             des = stringResource(R.string.jugar_desc),
             text = stringResource(R.string.tres),
@@ -186,7 +198,7 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
             imagen = imagen,
             textdes = textdes,
             seleccionado = false,
-            onClick = {  }
+            onClick = { }
 
         )
 
@@ -194,11 +206,13 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
             androidx.compose.material3.AlertDialog(
                 onDismissRequest = { },
                 title = { Text("Resultado") },
-                text = { Text(
-                    "$resultado",
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Center
-                ) },
+                text = {
+                    Text(
+                        "$resultado",
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Center
+                    )
+                },
                 containerColor = when (resultado) {
                     "GANASTES" -> Color.Cyan
                     "PERDISTES" -> Color.Yellow
@@ -213,12 +227,9 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
                     }
                 }
             )
+            }
+
         }
-
-
-
-
-
 
     }
 
