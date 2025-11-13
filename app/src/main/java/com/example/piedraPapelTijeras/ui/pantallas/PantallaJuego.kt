@@ -39,8 +39,6 @@ import com.example.piedraPapelTijeras.data.model.EnumElegirJugada
 import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.componentes.AgregarSurface
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
-
-
 @Composable
 
 fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostController){
@@ -81,7 +79,7 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
         Spacer(modifier = Modifier.Companion.height(50.dp))
 
         Text(
-            text = "Elige tu jugada",
+            text = stringResource(R.string.elige_jugada),
             fontSize = 50.sp
         )
 
@@ -153,8 +151,8 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
 
             onclick = { navController.popBackStack() },
             icon = Icons.AutoMirrored.Filled.ArrowBack,
-            des = "Volver",
-            text = "Volver",
+            des = stringResource(R.string.volver_text_desc),
+            text = stringResource(R.string.volver_text),
             fontsize = 15,
             modifier = Modifier.padding(top = 16.dp).width(150.dp)
         )
@@ -193,9 +191,9 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
         if (mostrarDialogo) {
             androidx.compose.material3.AlertDialog(
                 onDismissRequest = { },
-                title = { Text("Resultado") },
+                title = { stringResource(R.string.resultado_text) },
                 text = { Text(
-                    "$resultado",
+                    resultado,
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center
                 ) },
@@ -209,7 +207,7 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
                     androidx.compose.material3.TextButton(
                         onClick = { juegoViewModel.cerrarDialogo() }
                     ) {
-                        Text("Continuar")
+                        Text(stringResource(R.string.continuar_text))
                     }
                 }
             )

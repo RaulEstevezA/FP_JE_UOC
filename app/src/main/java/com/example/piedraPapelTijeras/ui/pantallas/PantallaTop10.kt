@@ -1,9 +1,9 @@
 package com.example.piedraPapelTijeras.ui.pantallas
 
+import com.example.piedraPapelTijeras.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +19,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.componentes.formatTimestamp
+import com.example.piedraPapelTijeras.ui.util.formatTimestamp
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 
@@ -46,8 +47,9 @@ fun PantallaTop10(top10ViewModel: Top10Viewmodel, navController: NavHostControll
     ) {
 
         Text(
-            text = "Top 10 Jugadores",
-            fontSize = 40.sp,
+            text = stringResource(R.string.top_10_text),
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
         )
 
@@ -87,8 +89,8 @@ fun PantallaTop10(top10ViewModel: Top10Viewmodel, navController: NavHostControll
         AgregarBoton(
             onclick = { navController.popBackStack() },
             icon = null,
-            des = "Volver",
-            text = "Volver",
+            des = stringResource(R.string.volver_text_desc),
+            text = stringResource(R.string.volver_text),
             fontsize = 40,
             modifier = Modifier.Companion.width(200.dp)
 

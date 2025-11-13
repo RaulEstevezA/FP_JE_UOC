@@ -13,6 +13,20 @@
     <string name="un_dos_tres">"1..2..3 piedra papel o tijeras 1...2... "</string>
     <string name="jugada_maquina">"Elección de manitas"</string>
     <string name="interrogante_text_desc">"Interrogante"</string>
+    <string name="volver_text">"Volver"</string>
+    <string name="volver_text_desc">"Volver"</string>
+    <string name="error_formato">"Error de Formato"</string>
+    <string name="usuario_no_registrado">"Usuario no Registrado"</string>
+    <string name="aceptar">"Aceptar"</string>
+    <string name="crear">"Crear"</string>
+    <string name="cancelar">"Cancelar"</string>
+    <string name="elige_jugada">"Elige tu jugada"</string>
+    <string name="resultado_text">"Resultado"</string>
+    <string name="ganastes">"GANASTES"</string>
+    <string name="perdistes">"PERDISTES"</string>
+    <string name="empate">"EMPATE"</string>
+    <string name="continuar_text">"Continuar"</string>
+    <string name="top_text">"Top 10 Jugadores"</string>
 
 
 </resources>
