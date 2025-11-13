@@ -1,1 +1,16 @@
+# Build folders
+/build/
+.gradle
+.idea/
+.DS_Store
+
+# Local configuration
 local.properties
+.idea/workspace.xml
+.idea/libraries/
+
+# Android build outputs
+/app/build/
+captures/
+.cxx/
+*.iml
