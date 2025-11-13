@@ -3,6 +3,7 @@ package com.example.piedraPapelTijeras.ui.pantallas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,12 +39,14 @@ import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.data.model.EnumElegirJugada
 import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.componentes.AgregarSurface
+import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
+import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 
 
 @Composable
 
-fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostController){
+fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostController, musicViewModel: MusicViewModel) {
 
     var jugadaJugador: EnumElegirJugada by remember { mutableStateOf(EnumElegirJugada.PIEDRA) }
 
@@ -52,176 +55,184 @@ fun PantallaJuego(juegoViewModel: JuegoViewModel, navController: NavHostControll
     val mostrarDialogo by juegoViewModel.mostrarDialogo.collectAsState()
     val resultado by juegoViewModel.resultado.collectAsState()
 
-
-    Column(
-        modifier = Modifier.Companion
-            .fillMaxSize()
+    Box(
+        modifier = Modifier.fillMaxSize()
             .background(Color(0xFFA8E6CF))
-            .padding(10.dp, 80.dp, 10.dp, 10.dp),
-
-        horizontalAlignment = Alignment.Companion.CenterHorizontally,
-
     ) {
-        //puntuacion y moneda
-        Image(
-            painter = painterResource(R.drawable.coins),
-            contentDescription = null,
-            modifier = Modifier.size(120.dp)
-
-        )
-        Text(
-            text = puntuacion.toString(),
-            fontSize = 50.sp
-
-        )
-
-
-
-        // Text elegir jugada
-        Spacer(modifier = Modifier.Companion.height(50.dp))
-
-        Text(
-            text = "Elige tu jugada",
-            fontSize = 50.sp
-        )
-
-
-        Spacer(modifier = Modifier.Companion.height(30.dp))
-
-        //eleccion jugada piedra papel o tijeras
-        Row(
-            modifier = Modifier.Companion.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 16.dp, top = 40.dp)
         ) {
-            AgregarSurface(
-                modifier = Modifier.size(100.dp),
-                shape = RoundedCornerShape(50.dp),
-                color = Color.Red,
-                imagen = painterResource(R.drawable.piedra),
-                textdes = stringResource(R.string.piedra_text_desc),
-                seleccionado = jugadaJugador == EnumElegirJugada.PIEDRA,
-                onClick = { jugadaJugador = EnumElegirJugada.PIEDRA }
-
-            )
-            AgregarSurface(
-                modifier = Modifier.size(100.dp),
-                shape = RoundedCornerShape(50.dp),
-                color = Color.Red,
-                imagen = painterResource(R.drawable.papel),
-                textdes = stringResource(R.string.papel_text_desc),
-                seleccionado = jugadaJugador == EnumElegirJugada.PAPEL,
-                onClick = { jugadaJugador = EnumElegirJugada.PAPEL }
-
-            )
-            AgregarSurface(
-                modifier = Modifier.size(100.dp),
-                shape = RoundedCornerShape(50.dp),
-                color = Color.Red,
-                imagen = painterResource(R.drawable.tijeras),
-                textdes = stringResource(R.string.tijeras_text_desc),
-                seleccionado = jugadaJugador == EnumElegirJugada.TIJERA,
-                onClick = { jugadaJugador = EnumElegirJugada.TIJERA }
-
-            )
-
+            CambiarBotonMusica(musicViewModel = musicViewModel)
         }
 
-        Spacer(modifier = Modifier.Companion.height(15.dp))
-        //Texto un dos tre piedra papel....
-        Text(
-            text = stringResource(R.string.un_dos_tres),
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
+        Column(
+            modifier = Modifier.Companion
+                .fillMaxSize()
+                .padding(10.dp, 80.dp, 10.dp, 10.dp),
 
-        Spacer(modifier = Modifier.Companion.height(30.dp))
-        //Boton jugar
-        AgregarBoton(
+            horizontalAlignment = Alignment.Companion.CenterHorizontally,
 
-            onclick = {juegoViewModel.jugar(jugadaJugador) },
-            icon = null,
-            des = stringResource(R.string.jugar_desc),
-            text = stringResource(R.string.tres),
-            fontsize = 40,
-            modifier = Modifier.Companion.width(200.dp)
-        )
+            ) {
+            //puntuacion y moneda
+            Image(
+                painter = painterResource(R.drawable.coins),
+                contentDescription = null,
+                modifier = Modifier.size(120.dp)
 
-        // Boton volver
-        AgregarBoton(
+            )
+            Text(
+                text = puntuacion.toString(),
+                fontSize = 50.sp
 
-            onclick = { navController.popBackStack() },
-            icon = Icons.AutoMirrored.Filled.ArrowBack,
-            des = "Volver",
-            text = "Volver",
-            fontsize = 15,
-            modifier = Modifier.padding(top = 16.dp).width(150.dp)
-        )
-
-        Spacer(modifier = Modifier.Companion.height(30.dp))
-        //Texto jugada maquina
-        Text(
-            text = stringResource(R.string.jugada_maquina),
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.Companion.height(10.dp))
-        // jugada escogida por la maquina
-
-        val (imagen, textdes) = when (jugadaMaquina) {
-
-            EnumElegirJugada.PIEDRA -> painterResource(R.drawable.piedra) to stringResource(R.string.piedra_text_desc)
-            EnumElegirJugada.PAPEL -> painterResource(R.drawable.papel) to stringResource(R.string.papel_text_desc)
-            EnumElegirJugada.TIJERA -> painterResource(R.drawable.tijeras) to stringResource(R.string.tijeras_text_desc)
-            null -> painterResource(R.drawable.interrogante) to stringResource(R.string.interrogante_text_desc)
-        }
+            )
 
 
-        AgregarSurface(
-            modifier = Modifier.size(100.dp),
-            shape = RoundedCornerShape(50.dp),
-            color = Color.Red,
-            imagen = imagen,
-            textdes = textdes,
-            seleccionado = false,
-            onClick = {  }
+            // Text elegir jugada
+            Spacer(modifier = Modifier.Companion.height(50.dp))
 
-        )
+            Text(
+                text = stringResource(R.string.elige_jugada),
+                fontSize = 50.sp
+            )
 
-        if (mostrarDialogo) {
-            androidx.compose.material3.AlertDialog(
-                onDismissRequest = { },
-                title = { Text("Resultado") },
-                text = { Text(
-                    "$resultado",
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Center
-                ) },
-                containerColor = when (resultado) {
-                    "GANASTES" -> Color.Cyan
-                    "PERDISTES" -> Color.Yellow
-                    else -> Color.White
 
-                },
-                confirmButton = {
-                    androidx.compose.material3.TextButton(
-                        onClick = { juegoViewModel.cerrarDialogo() }
-                    ) {
-                        Text("Continuar")
+            Spacer(modifier = Modifier.Companion.height(30.dp))
+
+            //eleccion jugada piedra papel o tijeras
+            Row(
+                modifier = Modifier.Companion.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+
+            ) {
+                AgregarSurface(
+                    modifier = Modifier.size(100.dp),
+                    shape = RoundedCornerShape(50.dp),
+                    color = Color.Red,
+                    imagen = painterResource(R.drawable.piedra),
+                    textdes = stringResource(R.string.piedra_text_desc),
+                    seleccionado = jugadaJugador == EnumElegirJugada.PIEDRA,
+                    onClick = { jugadaJugador = EnumElegirJugada.PIEDRA }
+
+                )
+                AgregarSurface(
+                    modifier = Modifier.size(100.dp),
+                    shape = RoundedCornerShape(50.dp),
+                    color = Color.Red,
+                    imagen = painterResource(R.drawable.papel),
+                    textdes = stringResource(R.string.papel_text_desc),
+                    seleccionado = jugadaJugador == EnumElegirJugada.PAPEL,
+                    onClick = { jugadaJugador = EnumElegirJugada.PAPEL }
+
+                )
+                AgregarSurface(
+                    modifier = Modifier.size(100.dp),
+                    shape = RoundedCornerShape(50.dp),
+                    color = Color.Red,
+                    imagen = painterResource(R.drawable.tijeras),
+                    textdes = stringResource(R.string.tijeras_text_desc),
+                    seleccionado = jugadaJugador == EnumElegirJugada.TIJERA,
+                    onClick = { jugadaJugador = EnumElegirJugada.TIJERA }
+
+                )
+
+            }
+
+            Spacer(modifier = Modifier.Companion.height(15.dp))
+            //Texto un dos tre piedra papel....
+            Text(
+                text = stringResource(R.string.un_dos_tres),
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.Companion.height(30.dp))
+            //Boton jugar
+            AgregarBoton(
+
+                onclick = { juegoViewModel.jugar(jugadaJugador) },
+                icon = null,
+                des = stringResource(R.string.jugar_desc),
+                text = stringResource(R.string.tres),
+                fontsize = 40,
+                modifier = Modifier.Companion.width(200.dp)
+            )
+
+            // Boton volver
+            AgregarBoton(
+
+                onclick = { navController.popBackStack() },
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
+                des = "Volver",
+                text = "Volver",
+                fontsize = 15,
+                modifier = Modifier.padding(top = 16.dp).width(150.dp)
+            )
+
+            Spacer(modifier = Modifier.Companion.height(30.dp))
+            //Texto jugada maquina
+            Text(
+                text = stringResource(R.string.jugada_maquina),
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.Companion.height(10.dp))
+            // jugada escogida por la maquina
+
+            val (imagen, textdes) = when (jugadaMaquina) {
+
+                EnumElegirJugada.PIEDRA -> painterResource(R.drawable.piedra) to stringResource(R.string.piedra_text_desc)
+                EnumElegirJugada.PAPEL -> painterResource(R.drawable.papel) to stringResource(R.string.papel_text_desc)
+                EnumElegirJugada.TIJERA -> painterResource(R.drawable.tijeras) to stringResource(R.string.tijeras_text_desc)
+                null -> painterResource(R.drawable.interrogante) to stringResource(R.string.interrogante_text_desc)
+            }
+
+
+            AgregarSurface(
+                modifier = Modifier.size(100.dp),
+                shape = RoundedCornerShape(50.dp),
+                color = Color.Red,
+                imagen = imagen,
+                textdes = textdes,
+                seleccionado = false,
+                onClick = { }
+
+            )
+
+            if (mostrarDialogo) {
+                androidx.compose.material3.AlertDialog(
+                    onDismissRequest = { },
+                    title = { stringResource(R.string.resultado_text) },
+                    text = {
+                        Text(
+                            resultado,
+                            fontSize = 30.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                    containerColor = when (resultado) {
+                        "GANASTES" -> Color.Cyan
+                        "PERDISTES" -> Color.Yellow
+                        else -> Color.White
+
+                    },
+                    confirmButton = {
+                        androidx.compose.material3.TextButton(
+                            onClick = { juegoViewModel.cerrarDialogo() }
+                        ) {
+                            Text("Continuar")
+                        }
                     }
-                }
-            )
+                )
+            }
+
+
         }
-
-
-
-
-
 
     }
-
 }
 
 
