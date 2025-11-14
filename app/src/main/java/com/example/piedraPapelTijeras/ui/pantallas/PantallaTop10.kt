@@ -2,10 +2,8 @@ package com.example.piedraPapelTijeras.ui.pantallas
 
 import com.example.piedraPapelTijeras.R
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.ui.util.formatTimestamp
@@ -35,7 +33,12 @@ import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 
 @Composable
-fun PantallaTop10(top10ViewModel: Top10Viewmodel, navController: NavHostController, musicViewModel: MusicViewModel) {
+fun PantallaTop10(
+    top10ViewModel: Top10Viewmodel,
+    navController: NavHostController,
+    musicViewModel: MusicViewModel,
+    soundPlayer: SoundPlayer
+) {
 
     LaunchedEffect(key1 = Unit) {
         top10ViewModel.cargarTop10()
@@ -97,7 +100,10 @@ fun PantallaTop10(top10ViewModel: Top10Viewmodel, navController: NavHostControll
 
         // Botón para volver
         AgregarBoton(
-            onclick = { navController.popBackStack() },
+            onclick = {
+                soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                navController.popBackStack()
+            },
             icon = null,
             des = stringResource(R.string.volver_text_desc),
             text = stringResource(R.string.volver_text),

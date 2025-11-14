@@ -1,4 +1,4 @@
-package com.example.piedraPapelTijeras.ui.componentes
+package com.example.piedraPapelTijeras.ui.util
 
 import kotlin.Triple
 import android.media.MediaPlayer
@@ -25,7 +25,7 @@ fun BackgroundMusicPlayer(musicViewModel: MusicViewModel) {
 
     DisposableEffect(Unit) {
         val mp = MediaPlayer.create(context, R.raw.musica_fondo)
-        mp.setVolume(0.5f, 0.5f)
+        mp.setVolume(0.1f, 0.1f)
         musicViewModel.initsetMediaPlayer(mp)
 
         if (isPlaying) {

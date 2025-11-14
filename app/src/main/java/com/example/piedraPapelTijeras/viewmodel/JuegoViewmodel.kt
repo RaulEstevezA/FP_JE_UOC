@@ -20,6 +20,9 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
     //Jugador actual de sesion
     private val _jugadorActual = MutableStateFlow<Jugador?>(null)
     val jugadorActual: StateFlow<Jugador?> = repositorio.jugadorActual
+    //dar tiempo a la animacion del juego
+    private val _juegoEnCurso = MutableStateFlow(false)
+    val juegoEnCurso: StateFlow<Boolean> = _juegoEnCurso
 
 
     private val _puntuacion = MutableStateFlow(0)
@@ -31,56 +34,70 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
     private val _jugadaMaquina = MutableStateFlow<EnumElegirJugada?>(null)
     val jugadaMaquina: StateFlow<EnumElegirJugada?> = _jugadaMaquina
 
-    private val _mostrarDialogo = MutableStateFlow(false)
-    val mostrarDialogo: StateFlow<Boolean> = _mostrarDialogo
-
 
     init {
         viewModelScope.launch {
             repositorio.jugadorActual.collect { jugador ->
+                _jugadorActual.value = jugador
                 _puntuacion.value = jugador?.puntuacion ?: 0
             }
         }
     }
 
 
+    fun jugar(jugadaJugador: EnumElegirJugada?) {
+
+        //si esta ocupado no acemos nada
+        if(_juegoEnCurso.value) return
 
 
 
 
-    fun jugar(jugadaJugador: EnumElegirJugada?){
-
-        val jugadaMaquina = elegirMaquina()
-        _jugadaMaquina.value = jugadaMaquina
-
-        val resultado = comprobarJugada(jugadaJugador ,jugadaMaquina )
-
-        _resultado.value = resultado.name
-
-        when (resultado) {
-
-            EnumResultado.GANASTES -> modificarPuntos(PUNTOS_GANAR)
-            EnumResultado.PERDISTES -> modificarPuntos(PUNTOS_PERDER)
-            EnumResultado.EMPATE -> modificarPuntos(0)
-
-        }
 
         viewModelScope.launch {
+            try {
+                //avisamos que estamos empezando
+                _juegoEnCurso.value = true
 
-            delay(1000)
+                _jugadaMaquina.value = null
+                _resultado.value = ""
+                val jugadaMaquinaSeleccionada = elegirMaquina()
+                _jugadaMaquina.value = jugadaMaquinaSeleccionada
 
-            _mostrarDialogo.value = true
+                val resultadoEnum = comprobarJugada(jugadaJugador, jugadaMaquinaSeleccionada)
+
+                delay(500)
+                _resultado.value = resultadoEnum.name
+
+
+
+
+                when (resultadoEnum) {
+                    EnumResultado.GANASTES -> modificarPuntos(PUNTOS_GANAR)
+                    EnumResultado.PERDISTES -> modificarPuntos(PUNTOS_PERDER)
+                    EnumResultado.EMPATE -> modificarPuntos(0)
+                }
+
+
+                delay(2000)
+
+                reiniciarParaSiguienteRonda()
+            }finally {
+                //ya hemos acabado
+                _juegoEnCurso.value = false
+            }
 
         }
+
 
     }
 
-    fun inicializarDatosDelJuego(){
+    fun inicializarDatosDelJuego() {
 
         val jugador = repositorio.jugadorActual.value
         if (jugador != null) {
             _puntuacion.value = jugador.puntuacion
-        }else{
+        } else {
             _puntuacion.value = 0
         }
 
@@ -104,6 +121,7 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
             (jugador == EnumElegirJugada.PIEDRA && maquina == EnumElegirJugada.TIJERA) ||
                     (jugador == EnumElegirJugada.TIJERA && maquina == EnumElegirJugada.PAPEL) ||
                     (jugador == EnumElegirJugada.PAPEL && maquina == EnumElegirJugada.PIEDRA) -> EnumResultado.GANASTES
+
             else -> EnumResultado.PERDISTES
 
         }
@@ -126,13 +144,16 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
         }
     }
 
+    fun reiniciarParaSiguienteRonda() {
 
-    fun cerrarDialogo() {
-        _mostrarDialogo.value = false
-        _jugadaMaquina.value = null
         _resultado.value = ""
+
+        _jugadaMaquina.value = null
     }
-
-
-
 }
+
+
+
+
+
+

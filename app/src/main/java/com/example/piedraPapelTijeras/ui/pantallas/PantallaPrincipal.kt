@@ -2,10 +2,8 @@ package com.example.piedraPapelTijeras.ui.pantallas
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,18 +19,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
-import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
+import com.example.piedraPapelTijeras.ui.util.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 
 
 @Composable
-fun PantallaPrincipal(navController: NavHostController, musicViewModel: MusicViewModel ) {
+fun PantallaPrincipal(
+    navController: NavHostController,
+    musicViewModel: MusicViewModel,
+    soundPlayer: SoundPlayer
+) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -64,7 +65,10 @@ fun PantallaPrincipal(navController: NavHostController, musicViewModel: MusicVie
             Spacer(modifier = Modifier.Companion.height(50.dp))
             //Boton jugar to Login
             AgregarBoton(
-                onclick = { navController.navigate("login") },
+                onclick = {
+                    soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                    navController.navigate("login")
+                },
                 icon = Icons.AutoMirrored.Filled.Send,
                 des = stringResource(R.string.jugar_desc),
                 text = stringResource(R.string.jugar_text),
@@ -74,7 +78,10 @@ fun PantallaPrincipal(navController: NavHostController, musicViewModel: MusicVie
             Spacer(modifier = Modifier.Companion.height(50.dp))
             //Boton Top10
             AgregarBoton(
-                onclick = { navController.navigate("top10") },
+                onclick = {
+                    soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                    navController.navigate("top10")
+                },
                 icon = Icons.AutoMirrored.Filled.Send,
                 des = stringResource(R.string.jugar_desc),
                 text = stringResource(R.string.top_10_text),

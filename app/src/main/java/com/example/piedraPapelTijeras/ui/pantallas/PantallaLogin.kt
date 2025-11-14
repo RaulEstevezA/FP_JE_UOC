@@ -36,14 +36,21 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 @Composable
 //fun PantallaLogin()
-fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel, navController: NavHostController, musicViewModel: MusicViewModel)
+fun PantallaLogin(
+    loginViewModel: LoginViewModel,
+    top10ViewModel: Top10Viewmodel,
+    navController: NavHostController,
+    musicViewModel: MusicViewModel,
+    soundPlayer: SoundPlayer
+)
 {
 
     var textLogin by rememberSaveable { mutableStateOf("") }
@@ -97,6 +104,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
         AgregarBoton(
 
             onclick = {
+                soundPlayer.playSounds(soundPlayer.sonidoBotonId)
                 loginViewModel.cargarJugador(
                     textLogin,
                     usuarioExiste = { navController.navigate("juego") },
@@ -111,7 +119,10 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
 
         AgregarBoton(
 
-            onclick = { navController.popBackStack() },
+            onclick = {
+                soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                navController.popBackStack()
+            },
             icon = Icons.AutoMirrored.Filled.ArrowBack,
             des = stringResource(R.string.volver_text_desc),
             text = stringResource(R.string.volver_text),
