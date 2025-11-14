@@ -22,7 +22,8 @@ fun AgregarBoton(
     des: String,
     text: String,
     fontsize: Int = 20,
-    modifier: Modifier
+    modifier: Modifier,
+    enabled: Boolean = true
 ){
 
     Button(
@@ -39,7 +40,8 @@ fun AgregarBoton(
                 Icon(
                     imageVector = icon,
                     contentDescription = des,
-                    modifier = Modifier.Companion.size(30.dp)
+                    modifier = Modifier.Companion.size(30.dp),
+
                 )
             }
             Text(
