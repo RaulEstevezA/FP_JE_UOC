@@ -26,7 +26,7 @@ fun BackgroundMusicPlayer(musicViewModel: MusicViewModel) {
     DisposableEffect(Unit) {
         val mp = MediaPlayer.create(context, R.raw.musica_fondo)
         mp.setVolume(0.5f, 0.5f)
-        musicViewModel.initsetMediaPlayer(mp)
+        musicViewModel.initMediaPlayer(mp)
 
         if (isPlaying) {
             musicViewModel.startMusic()
@@ -65,4 +65,5 @@ fun CambiarBotonMusica(musicViewModel: MusicViewModel) {
         fontsize = 20,
         modifier = Modifier.width(120.dp)
     )
+
 }
