@@ -27,6 +27,10 @@
     <string name="empate">"EMPATE"</string>
     <string name="continuar_text">"Continuar"</string>
     <string name="top_text">"Top 10 Jugadores"</string>
+    <string name="captura_text">"capturar"</string>
+    <string name="captura_desc">"capturar"</string>
+
+
 
 
 </resources>

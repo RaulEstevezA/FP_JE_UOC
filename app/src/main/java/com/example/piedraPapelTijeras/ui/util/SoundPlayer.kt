@@ -16,6 +16,7 @@ class SoundPlayer(context: Context) {
      val sonidoVictoriaId: Int //sonido victoria
      val sonidoEmpateId: Int //sonido empate
      val sonidoDerrotaId: Int //sonido derrota
+     val sonidoFotoId: Int// sonido foto
 
 
     //comprueba si se cargo el sonido
@@ -48,6 +49,7 @@ class SoundPlayer(context: Context) {
         sonidoVictoriaId = soundPool.load(context, R.raw.congratulation_sound, 1)
         sonidoDerrotaId = soundPool.load(context, R.raw.lose_sound, 1)
         sonidoEmpateId = soundPool.load(context, R.raw.empate_sound, 1)
+        sonidoFotoId = soundPool.load(context, R.raw.foto_sound, 1)
 
 
     }
