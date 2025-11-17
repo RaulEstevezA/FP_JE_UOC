@@ -53,7 +53,7 @@ fun PantallaLogin(
 )
 {
 
-    var textLogin by rememberSaveable { mutableStateOf("") }
+    var textLogin by rememberSaveable { mutableStateOf("j@gmail.com") }
     //  nuevos estados del ViewModel
     val showInvalidEmailDialog by loginViewModel.invalidoEmailDialogo.collectAsState()
     val showUserNotFoundDialog by loginViewModel.usuarioNoEncontrado.collectAsState()
