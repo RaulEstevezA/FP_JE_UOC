@@ -16,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.piedraPapelTijeras.ui.util.BackgroundMusicPlayer
+import com.example.piedraPapelTijeras.ui.componentes.BackgroundMusicPlayer
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaJuego
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaLogin
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaPrincipal
