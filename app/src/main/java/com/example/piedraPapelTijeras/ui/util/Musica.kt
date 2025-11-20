@@ -25,7 +25,7 @@ fun BackgroundMusicPlayer(musicViewModel: MusicViewModel) {
 
     DisposableEffect(Unit) {
         val mp = MediaPlayer.create(context, R.raw.musica_fondo)
-        mp.setVolume(0.5f, 0.5f)
+        mp.setVolume(0.3f, 0.3f)
         musicViewModel.initMediaPlayer(mp)
 
         if (isPlaying) {

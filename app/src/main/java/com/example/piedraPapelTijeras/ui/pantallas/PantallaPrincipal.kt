@@ -25,10 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import android.net.Uri
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.filled.Audiotrack
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.util.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 
