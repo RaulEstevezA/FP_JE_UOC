@@ -65,5 +65,4 @@ fun CambiarBotonMusica(musicViewModel: MusicViewModel) {
         fontsize = 20,
         modifier = Modifier.width(120.dp)
     )
-
 }

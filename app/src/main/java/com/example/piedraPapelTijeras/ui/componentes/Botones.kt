@@ -22,24 +22,27 @@ fun AgregarBoton(
     des: String,
     text: String,
     fontsize: Int = 20,
-    modifier: Modifier
+    modifier: Modifier,
+    enabled: Boolean = true
 ){
 
     Button(
         onClick = onclick,
-        modifier = modifier.height(60.dp)
+        modifier = modifier.height(60.dp),
+        enabled = enabled
 
     ) {
         Row(
-            modifier = Modifier.Companion.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.Companion.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             if (icon != null) {
                 Icon(
                     imageVector = icon,
                     contentDescription = des,
-                    modifier = Modifier.Companion.size(30.dp)
+                    modifier = Modifier.size(30.dp),
+
                 )
             }
             Text(

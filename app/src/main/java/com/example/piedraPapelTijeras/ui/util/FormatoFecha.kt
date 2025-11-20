@@ -1,4 +1,4 @@
-package com.example.piedraPapelTijeras.ui.componentes
+package com.example.piedraPapelTijeras.ui.util
 
 import java.text.SimpleDateFormat
 import java.util.Date

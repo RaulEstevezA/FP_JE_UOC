@@ -36,18 +36,27 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 @Composable
 //fun PantallaLogin()
-fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel, navController: NavHostController, musicViewModel: MusicViewModel)
+fun PantallaLogin(
+    loginViewModel: LoginViewModel,
+    top10ViewModel: Top10Viewmodel,
+    navController: NavHostController,
+    musicViewModel: MusicViewModel,
+    soundPlayer: SoundPlayer
+)
 {
 
-    var textLogin by rememberSaveable { mutableStateOf("a@b.es") }
-    val registroNuevo by loginViewModel.registroNuevo.collectAsState()
+    var textLogin by rememberSaveable { mutableStateOf("j@gmail.com") }
+    //  nuevos estados del ViewModel
+    val showInvalidEmailDialog by loginViewModel.invalidoEmailDialogo.collectAsState()
+    val showUserNotFoundDialog by loginViewModel.usuarioNoEncontrado.collectAsState()
     val dialogoTexto by loginViewModel.dialogoTexto.collectAsState()
 
     Box(
@@ -89,10 +98,13 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
         Spacer(modifier = Modifier.Companion.height(50.dp))
 
 
-        // boton Login salta a jugar si exste el ussuario sino abre AlertDialog
+
+
+        // boton Login salta a jugar si exste el usuario sino abre AlertDialog
         AgregarBoton(
 
             onclick = {
+                soundPlayer.playSounds(soundPlayer.sonidoBotonId)
                 loginViewModel.cargarJugador(
                     textLogin,
                     usuarioExiste = { navController.navigate("juego") },
@@ -107,18 +119,36 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
 
         AgregarBoton(
 
-            onclick = { navController.popBackStack() },
+            onclick = {
+                soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                navController.popBackStack()
+            },
             icon = Icons.AutoMirrored.Filled.ArrowBack,
-            des = "Volver",
-            text = "Volver",
+            des = stringResource(R.string.volver_text_desc),
+            text = stringResource(R.string.volver_text),
             modifier = Modifier.padding(top = 16.dp).width(150.dp)
         )
 
-        if (registroNuevo) {
+        // Diálogo 1: Para el error de formato de email
+        if (showInvalidEmailDialog) {
+            AlertDialog(
+                onDismissRequest = { loginViewModel.cerrarDialogo() },
+                title = { Text(stringResource(R.string.error_formato)) },
+                text = { Text(dialogoTexto) },
+                confirmButton = {
+                    Button(onClick = { loginViewModel.cerrarDialogo() }) {
+                        Text(stringResource(R.string.aceptar))
+                    }
+                }
+            )
+        }
+
+        // Diálogo 2: Para cuando el usuario no se encuentra y se le ofrece crearlo
+        if (showUserNotFoundDialog) {
             val currentTextLogin = textLogin
             AlertDialog(
-                onDismissRequest = { },
-                title = { Text("Usuario no encontrado") },
+                onDismissRequest = { loginViewModel.cerrarDialogo() },
+                title = { Text(stringResource(R.string.usuario_no_registrado)) },
                 text = { Text(dialogoTexto) },
                 confirmButton = {
                     Button(onClick = {
@@ -129,12 +159,12 @@ fun PantallaLogin(loginViewModel: LoginViewModel, top10ViewModel: Top10Viewmodel
                         )
                         loginViewModel.cerrarDialogo()
                     }) {
-                        Text("Crear usuario")
+                        Text(stringResource(R.string.crear))
                     }
                 },
                 dismissButton = {
                     Button(onClick = { loginViewModel.cerrarDialogo() }) {
-                        Text("Cancelar")
+                        Text(stringResource(R.string.cancelar))
                     }
                 }
             )
