@@ -1,9 +1,13 @@
 package com.example.piedraPapelTijeras.viewmodel
 
+import android.content.Context
 import android.media.MediaPlayer
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class MusicViewModel : ViewModel() {
 
@@ -12,9 +16,11 @@ class MusicViewModel : ViewModel() {
 
     private var mediaPlayer: MediaPlayer? = null
 
-    fun initsetMediaPlayer(mp: MediaPlayer) {
+    private val _currentMusicUri = MutableStateFlow<Uri?>(null)
+    val currentMusicUri: StateFlow<Uri?> = _currentMusicUri.asStateFlow()
+
+    fun initMediaPlayer(mp: MediaPlayer) {
         mediaPlayer = mp
-        // Asegurarse de que esté en bucle (looping)
         mediaPlayer?.isLooping = true
     }
 
@@ -48,5 +54,29 @@ class MusicViewModel : ViewModel() {
         mediaPlayer?.release()
         mediaPlayer = null
         super.onCleared()
+    }
+
+    fun loadNewMusic(context: Context, uri: Uri) {
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+
+        _currentMusicUri.value = uri
+
+        try {
+            val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")
+
+            parcelFileDescriptor?.use { pfd ->
+
+                val mp = MediaPlayer()
+                mp.setDataSource(pfd.fileDescriptor)
+                mp.prepare()
+
+                initMediaPlayer(mp)
+                startMusic()
+            }
+        } catch (e: Exception) {
+            Log.e("MusicViewModel", "Error al cargar la música desde URI: $e")
+        }
     }
 }

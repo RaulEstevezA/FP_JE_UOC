@@ -48,7 +48,7 @@ import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.data.model.EnumElegirJugada
 import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.componentes.AgregarSurface
-import com.example.piedraPapelTijeras.ui.util.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.ui.util.salvarFotoAGaleria
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
