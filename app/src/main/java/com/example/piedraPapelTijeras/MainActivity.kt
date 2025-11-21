@@ -32,9 +32,13 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.os.Build
 import android.util.Log
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity : ComponentActivity() {
     private lateinit var juegoViewModel: JuegoViewModel
+    private lateinit var musicViewModel: MusicViewModel
+    private val handler = Handler(Looper.getMainLooper())
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -89,10 +93,10 @@ class MainActivity : ComponentActivity() {
 
                         factory = Injeccion.provideLoginViewModelFactory(context = applicationContext)
                     )
-                    //Para la musica de fondo
-                    val musicViewModel: MusicViewModel = viewModel()
 
-                    BackgroundMusicPlayer(musicViewModel = musicViewModel)
+                    this@MainActivity.musicViewModel = viewModel()
+
+                    BackgroundMusicPlayer(musicViewModel = this@MainActivity.musicViewModel)
 
                     //Para los efectos de sonido de eleccion de jugada
                     //Creamos una una instancia de SoundPlayer en el contexto de la actividad
@@ -112,7 +116,7 @@ class MainActivity : ComponentActivity() {
                         composable("principal") {
                             PantallaPrincipal(
                                 navController = navController,
-                                musicViewModel = musicViewModel,
+                                musicViewModel = this@MainActivity.musicViewModel,
                                 soundPlayer = soundPlayer
 
                             )
@@ -122,7 +126,7 @@ class MainActivity : ComponentActivity() {
                                 loginViewModel = loginViewModel,
                                 top10ViewModel = top10ViewModel,
                                 navController = navController,
-                                musicViewModel = musicViewModel,
+                                musicViewModel = this@MainActivity.musicViewModel,
                                 soundPlayer = soundPlayer
                             )
 
@@ -131,7 +135,7 @@ class MainActivity : ComponentActivity() {
                             PantallaJuego(
                                 juegoViewModel = this@MainActivity.juegoViewModel,
                                 navController = navController,
-                                musicViewModel = musicViewModel,
+                                musicViewModel = this@MainActivity.musicViewModel,
                                 soundPlayer = soundPlayer
                             )
                         }
@@ -139,13 +143,30 @@ class MainActivity : ComponentActivity() {
                             PantallaTop10(
                                 top10ViewModel = top10ViewModel,
                                 navController = navController,
-                                musicViewModel = musicViewModel,
+                                musicViewModel = this@MainActivity.musicViewModel,
                                 soundPlayer = soundPlayer
                             )
                         }
-
                     }
                 }
+            }
+        }
+    }
+    override fun onPause() {
+        super.onPause()
+
+        if (::musicViewModel.isInitialized) {
+            musicViewModel.systemPauseMusic()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::musicViewModel.isInitialized) {
+            if (musicViewModel.isMusicPlaying.value) {
+                handler.postDelayed({
+                    musicViewModel.startMusic(applicationContext)
+                },250)
             }
 
         }
