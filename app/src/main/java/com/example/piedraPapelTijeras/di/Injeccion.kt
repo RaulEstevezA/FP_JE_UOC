@@ -39,7 +39,7 @@ object Injeccion {
 
                     val repositorio = provideJugadorRepositorio(context)
                     @Suppress("UNCHECKED_CAST")
-                    return JuegoViewModel(repositorio = repositorio, top10Viewmodel = top10ViewModel) as T
+                    return JuegoViewModel(repositorio = repositorio, top10Viewmodel = top10ViewModel, context) as T
                 }
 
 
