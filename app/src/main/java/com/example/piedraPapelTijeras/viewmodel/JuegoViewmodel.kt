@@ -154,8 +154,6 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
 
         val jugadorActualizado = jugador.copy(puntuacion = nuevaPuntuacion)
 
-
-
         viewModelScope.launch {
             repositorio.actualizarPuntuacion(jugadorActualizado)
             top10Viewmodel.cargarTop10()
@@ -194,7 +192,6 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
             // Considera mostrar un Toast o Snackbar al usuario aquí.
         }
     }
-
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Notificaciones de Victoria"
@@ -208,7 +205,6 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
             notificationManager.createNotificationChannel(channel)
         }
     }
-
     private fun sendWinNotification(playerName: String, score: Int) {
         val title = "🏆 ¡Ganaste, $playerName!"
         val message = "Tu nueva puntuación es $score. ¡Sigue así!"
