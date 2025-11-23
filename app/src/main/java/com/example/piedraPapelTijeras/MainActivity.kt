@@ -17,10 +17,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.piedraPapelTijeras.ui.componentes.BackgroundMusicPlayer
+import com.example.piedraPapelTijeras.ui.pantallas.PantallaAyuda
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaJuego
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaLogin
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaPrincipal
-import com.example.piedraPapelTijeras.ui.pantallas.PantallaTop10
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
@@ -99,9 +99,8 @@ class MainActivity : ComponentActivity() {
                                 soundPlayer = soundPlayer
                             )
                         }
-                        composable("top10") {
-                            PantallaTop10(
-                                top10ViewModel = top10ViewModel,
+                        composable("ayuda") {
+                            PantallaAyuda(
                                 navController = navController,
                                 musicViewModel = musicViewModel,
                                 soundPlayer = soundPlayer

@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">PiedraPapelTijeras</string>
     <string name="PiedraPapelTijeras" />
-    <string name="jugar_desc">Enviar</string>
+    <string name="jugar_desc">jugar</string>
     <string name="jugar_text">Jugar</string>
     <string name="top_10_text">Top 10</string>
+    <string name="top_10_desc">Top 10</string>
     <string name="login_text">Login</string>
     <string name="login_textField_label">LoginLabel</string>
     <string name="piedra_text_desc">piedra</string>
@@ -29,6 +30,13 @@
     <string name="top_text">"Top 10 Jugadores"</string>
     <string name="captura_text">"capturar"</string>
     <string name="captura_desc">"capturar"</string>
+    <string name="ayuda">"Centro de Ayuda"</string>
+    <string name="reglas">"Consulta las reglas abajo 👇"</string>
+    <string name="ayuda_text">"ayuda"</string>
+    <string name="ayuda_desc">"ayuda"</string>
+    <string name="cambiar_musica_des">"cambiar música"</string>
+    <string name="cambiar_musica_text">"cambiar música"</string>
+
 
 
 
