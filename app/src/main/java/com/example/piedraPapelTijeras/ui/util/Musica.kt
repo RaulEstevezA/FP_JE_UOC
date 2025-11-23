@@ -23,31 +23,28 @@ fun BackgroundMusicPlayer(musicViewModel: MusicViewModel) {
     val context = LocalContext.current
     val isPlaying by musicViewModel.isMusicPlaying.collectAsState()
 
-    DisposableEffect(Unit) {
+    LaunchedEffect(Unit) {
         val mp = MediaPlayer.create(context, R.raw.musica_fondo)
         mp.setVolume(0.3f, 0.3f)
-        musicViewModel.initMediaPlayer(mp)
+        musicViewModel.initMediaPlayer(mp, context)
 
         if (isPlaying) {
-            musicViewModel.startMusic()
-        }
-
-        onDispose {
-
+            musicViewModel.startMusic(context)
         }
     }
 
-    LaunchedEffect(isPlaying) {
-        if (isPlaying) {
-            musicViewModel.startMusic()
-        } else {
-            musicViewModel.pauseMusic()
-        }
-    }
+//    LaunchedEffect(isPlaying) {
+//        if (isPlaying) {
+//            musicViewModel.startMusic(context)
+//        } else {
+//            musicViewModel.pauseMusic(context)
+//        }
+//    }
 }
 
 @Composable
 fun CambiarBotonMusica(musicViewModel: MusicViewModel) {
+    val context = LocalContext.current
     val isPlaying by musicViewModel.isMusicPlaying.collectAsState()
 
     val (icon, description, text) = if (isPlaying) {
@@ -58,7 +55,7 @@ fun CambiarBotonMusica(musicViewModel: MusicViewModel) {
 
     // 2. Resolver referencia de AgregarBoton
     AgregarBoton(
-        onclick = { musicViewModel.toggleMusic() },
+        onclick = { musicViewModel.toggleMusic(context) },
         icon = icon,
         des = description,
         text = text,
