@@ -27,7 +27,6 @@ object Injeccion {
         }
     }
 
-
     fun provideJuegoViewModelFactory(context: Context, top10ViewModel: Top10Viewmodel): ViewModelProvider.Factory {
 
         return object : ViewModelProvider.Factory {
