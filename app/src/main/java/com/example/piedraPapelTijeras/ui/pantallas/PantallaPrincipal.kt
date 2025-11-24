@@ -27,6 +27,7 @@ import androidx.navigation.NavHostController
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.automirrored.filled.HelpCenter
 import androidx.compose.material.icons.filled.Audiotrack
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
@@ -77,8 +78,8 @@ fun PantallaPrincipal(
                 AgregarBoton(
                     onclick = { launcher.launch(arrayOf("audio/*")) },
                     icon = Icons.Default.Audiotrack,
-                    des = "Cambiar Música",
-                    text = "Cambiar Música",
+                    des = stringResource(R.string.cambiar_musica_des),
+                    text = stringResource(R.string.cambiar_musica_text),
                     modifier = Modifier.Companion.width(170.dp)
                 )
             }
@@ -111,8 +112,21 @@ fun PantallaPrincipal(
                     navController.navigate("top10")
                 },
                 icon = Icons.AutoMirrored.Filled.Send,
-                des = stringResource(R.string.jugar_desc),
+                des = stringResource(R.string.top_10_desc),
                 text = stringResource(R.string.top_10_text),
+                modifier = Modifier.Companion.width(200.dp)
+            )
+
+            Spacer(modifier = Modifier.Companion.height(50.dp))
+            //Boton ayuda
+            AgregarBoton(
+                onclick = {
+                    soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                    navController.navigate("ayuda")
+                },
+                icon = Icons.AutoMirrored.Filled.HelpCenter,
+                des = stringResource(R.string.ayuda_desc),
+                text = stringResource(R.string.ayuda_text),
                 modifier = Modifier.Companion.width(200.dp)
             )
 
