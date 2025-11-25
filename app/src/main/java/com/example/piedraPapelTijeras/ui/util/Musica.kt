@@ -25,11 +25,11 @@ fun BackgroundMusicPlayer(musicViewModel: MusicViewModel) {
 
     LaunchedEffect(Unit) {
         val mp = MediaPlayer.create(context, R.raw.musica_fondo)
-        mp.setVolume(0.3f, 0.3f)
+        mp.setVolume(0.5f, 0.5f)
         musicViewModel.initMediaPlayer(mp, context)
 
         if (isPlaying) {
-            musicViewModel.startMusic(context)
+            mp.start()
         }
     }
 

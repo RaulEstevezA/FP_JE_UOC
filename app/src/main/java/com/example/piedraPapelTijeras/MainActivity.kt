@@ -154,8 +154,7 @@ class MainActivity : ComponentActivity() {
     }
     override fun onPause() {
         super.onPause()
-
-        if (::musicViewModel.isInitialized) {
+        if (::musicViewModel.isInitialized && musicViewModel.isMusicPlaying.value) {
             musicViewModel.systemPauseMusic()
         }
     }
@@ -163,12 +162,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         if (::musicViewModel.isInitialized) {
-            if (musicViewModel.isMusicPlaying.value) {
-                handler.postDelayed({
-                    musicViewModel.startMusic(applicationContext)
-                },250)
-            }
-
+            musicViewModel.resumeIfNeeded(applicationContext)
         }
     }
 }

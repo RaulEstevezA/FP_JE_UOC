@@ -30,6 +30,27 @@ class MusicViewModel : ViewModel() {
 
     private val handler = Handler(Looper.getMainLooper())
 
+    fun resumeIfNeeded(context: Context) {
+        if (_isMusicPlaying.value && mediaPlayer?.isPlaying == false) {
+            handler.postDelayed({
+                requestAudioFocus(context)
+                mediaPlayer?.start()
+            }, 250) // retardo de 250 ms
+        }
+    }
+
+    private fun saveMusicPreference(context: Context) {
+        val prefs = context.getSharedPreferences("music_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putBoolean("isMusicPlaying", _isMusicPlaying.value).apply()
+    }
+
+    private fun loadMusicPreference(context: Context): Boolean {
+        val prefs = context.getSharedPreferences("music_prefs", Context.MODE_PRIVATE)
+        val hasKey = prefs.contains("isMusicPlaying")
+        _isMusicPlaying.value = prefs.getBoolean("isMusicPlaying", true)
+        return !hasKey
+    }
+
     private fun abandonFocusInternal() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             audioFocusRequest?.let { audioManager.abandonAudioFocusRequest(it) }
@@ -45,6 +66,17 @@ class MusicViewModel : ViewModel() {
         mediaPlayer?.isLooping = true
 
         audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        val prefs = context.getSharedPreferences("music_prefs", Context.MODE_PRIVATE)
+        if (!prefs.contains("isMusicPlaying")) {
+            _isMusicPlaying.value = true
+            saveMusicPreference(context)
+        } else {
+            loadMusicPreference(context)
+        }
+
+        requestAudioFocus(context)
+        mediaPlayer?.start()
     }
 
     fun toggleMusic(context: Context) {
@@ -56,6 +88,8 @@ class MusicViewModel : ViewModel() {
         } else {
             startMusic(context)
         }
+
+        saveMusicPreference(context)
     }
 
     fun startMusic(context: Context) {
@@ -64,28 +98,19 @@ class MusicViewModel : ViewModel() {
                 mediaPlayer?.start()
             }
             _isMusicPlaying.value = true
+            saveMusicPreference(context)
         }
     }
 
     fun pauseMusic(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            audioFocusRequest?.let { audioManager.abandonAudioFocusRequest(it) }
-        } else {
-            audioManager.abandonAudioFocus(null)
-        }
-        if (mediaPlayer?.isPlaying == true) {
-            mediaPlayer?.pause()
-        }
+        abandonFocusInternal()
+        mediaPlayer?.takeIf { it.isPlaying }?.pause()
         _isMusicPlaying.value = false
+        saveMusicPreference(context)
     }
 
     override fun onCleared() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            audioFocusRequest?.let { audioManager.abandonAudioFocusRequest(it) }
-        } else {
-            audioManager.abandonAudioFocus(null)
-        }
-
+        abandonFocusInternal()
         mediaPlayer?.stop()
         mediaPlayer?.release()
         mediaPlayer = null
@@ -116,10 +141,15 @@ class MusicViewModel : ViewModel() {
                 val mp = MediaPlayer()
                 mp.setDataSource(pfd.fileDescriptor)
                 mp.prepare()
+                mp.isLooping = true
 
-                initMediaPlayer(mp, context)
-                _isMusicPlaying.value = true
-                startMusic(context)
+                mediaPlayer = mp
+                audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                if (_isMusicPlaying.value) {
+                    if (requestAudioFocus(context)) {
+                        mediaPlayer?.start()
+                    }
+                }
             }
         } catch (e: Exception) {
             Log.e("MusicViewModel", "Error al cargar la música desde URI: $e")
@@ -136,21 +166,21 @@ class MusicViewModel : ViewModel() {
         // Manejador que el sistema llamará cuando el foco cambie (ver paso 1.B)
         val focusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
             when (focusChange) {
-                AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                    // Detener la reproducción
+                AudioManager.AUDIOFOCUS_LOSS -> {
+                    systemPauseMusic()
+                    abandonFocusInternal()
+                }
+                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                     systemPauseMusic()
                 }
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                    mediaPlayer?.setVolume(0.1f, 0.1f) // Bajar volumen (ducking)
+                    mediaPlayer?.setVolume(0.1f, 0.1f)
                 }
                 AudioManager.AUDIOFOCUS_GAIN -> {
-                    mediaPlayer?.setVolume(0.3f, 0.3f) // Restaurar volumen original
-                    handler.postDelayed({
-                        if (mediaPlayer?.isPlaying == false && _isMusicPlaying.value) {
-                            mediaPlayer?.start() // Reanudar
-                        }
-                    }, 250)
-
+                    mediaPlayer?.setVolume(0.5f, 0.5f)
+                    if (_isMusicPlaying.value && mediaPlayer?.isPlaying == false) {
+                        mediaPlayer?.start()
+                    }
                 }
             }
         }
