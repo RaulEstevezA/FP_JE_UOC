@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-11-26T18:11:23.828047700Z">
+        <DropdownSelection timestamp="2025-11-26T18:56:17.624442200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\jordi\.android\avd\Mi_virtual_Device.avd" />
