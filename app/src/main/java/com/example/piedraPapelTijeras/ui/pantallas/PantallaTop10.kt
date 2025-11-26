@@ -46,7 +46,7 @@ fun PantallaTop10(
 
     val top10 by top10ViewModel.top10.collectAsState()
 
-        Column(
+    Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFFA8E6CF))
