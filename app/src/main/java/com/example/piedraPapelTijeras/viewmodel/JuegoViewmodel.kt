@@ -59,7 +59,7 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
 
     fun jugar(jugadaJugador: EnumElegirJugada?) {
 
-        //si esta ocupado no acemos nada
+        //si esta ocupado no hacemos nada
         if(_juegoEnCurso.value) return
 
 
