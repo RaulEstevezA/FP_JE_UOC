@@ -34,6 +34,7 @@ import android.os.Build
 import android.util.Log
 import android.os.Handler
 import android.os.Looper
+import com.example.piedraPapelTijeras.ui.pantallas.PantallaTop10
 
 class MainActivity : ComponentActivity() {
     private lateinit var juegoViewModel: JuegoViewModel
@@ -141,6 +142,14 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("ayuda") {
                             PantallaAyuda(
+                                navController = navController,
+                                musicViewModel = this@MainActivity.musicViewModel,
+                                soundPlayer = soundPlayer
+                            )
+                        }
+                        composable("top10") {
+                            PantallaTop10(
+                                top10ViewModel = top10ViewModel,
                                 navController = navController,
                                 musicViewModel = this@MainActivity.musicViewModel,
                                 soundPlayer = soundPlayer
