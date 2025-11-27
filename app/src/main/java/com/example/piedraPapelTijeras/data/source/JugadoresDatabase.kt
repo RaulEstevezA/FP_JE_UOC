@@ -5,21 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.piedraPapelTijeras.data.model.Jugador
-import com.example.piedraPapelTijeras.data.model.Ubicacion
 import com.example.piedraPapelTijeras.data.dao.JugadorDao
-import com.example.piedraPapelTijeras.data.dao.UbicacionDao
 
 const val DATABASE_NAME = "jugadores.db"
 
 @Database(
-    entities = [Jugador::class, Ubicacion::class],
-    version = 2,
+    entities = [Jugador::class],
+    version = 3,
     exportSchema = false
 )
 abstract class JugadoresDatabase : RoomDatabase() {
 
     abstract val jugadorDao: JugadorDao
-    abstract val ubicacionDao: UbicacionDao
+
 
     companion object {
 
