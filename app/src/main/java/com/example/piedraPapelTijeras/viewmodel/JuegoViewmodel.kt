@@ -89,7 +89,7 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
                     EnumResultado.GANASTES -> {
                         val nombreJugador = _jugadorActual.value?.mail ?: "Jugador Anónimo"
                         val puntuacionFinal = _puntuacion.value + PUNTOS_GANAR
-                        saveWinToCalendar(nombreJugador, puntuacionFinal)
+                        //saveWinToCalendar(nombreJugador, puntuacionFinal)
                         sendWinNotification(nombreJugador, puntuacionFinal)
                         modificarPuntos(PUNTOS_GANAR)
                     }
