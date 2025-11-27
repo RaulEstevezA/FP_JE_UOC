@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">RockPaperScissors</string>
+    <string name="PiedraPapelTijeras"></string>
+
+    <!-- Buttons -->
+    <string name="jugar_desc">play</string>
+    <string name="jugar_text">Play</string>
+    <string name="top_10_text">Top 10</string>
+    <string name="top_10_desc">Top 10</string>
+
+    <!-- Login -->
+    <string name="login_text">Login</string>
+    <string name="login_textField_label">Email</string>
+
+    <!-- Moves -->
+    <string name="piedra_text_desc">rock</string>
+    <string name="papel_text_desc">paper</string>
+    <string name="tijeras_text_desc">scissors</string>
+
+    <!-- Game flow -->
+    <string name="tres">3</string>
+    <string name="un_dos_tres">1..2..3 rock, paper or scissors...</string>
+    <string name="jugada_maquina">Machine choice</string>
+    <string name="interrogante_text_desc">Question mark</string>
+
+    <!-- Navigation -->
+    <string name="volver_text">Back</string>
+    <string name="volver_text_desc">Back</string>
+
+    <!-- Errors -->
+    <string name="error_formato">Format error</string>
+    <string name="usuario_no_registrado">User not registered</string>
+
+    <!-- Dialogs -->
+    <string name="aceptar">Accept</string>
+    <string name="crear">Create</string>
+    <string name="cancelar">Cancel</string>
+
+    <!-- Gameplay -->
+    <string name="elige_jugada">Choose your move</string>
+    <string name="resultado_text">Result</string>
+
+    <!-- Results -->
+    <string name="ganastes">YOU WON</string>
+    <string name="perdistes">YOU LOST</string>
+    <string name="empate">DRAW</string>
+
+    <!-- General -->
+    <string name="continuar_text">Continue</string>
+    <string name="top_text">Top 10 Players</string>
+
+    <!-- Capture -->
+    <string name="captura_text">capture</string>
+    <string name="captura_desc">capture</string>
+
+    <!-- Help -->
+    <string name="ayuda">Help Center</string>
+    <string name="reglas">Check the rules below 👇</string>
+    <string name="ayuda_text">help</string>
+    <string name="ayuda_desc">help</string>
+
+    <!-- Music -->
+    <string name="cambiar_musica_des">change music</string>
+    <string name="cambiar_musica_text">change music</string>
+
+    <!-- eMail -->
+    <string name="error_correo_invalido">The email is not valid. It must be a valid Gmail address.</string>
+    <string name="error_usuario_no_registrado">The email is not registered. Do you want to create a new user?</string>
+    <string name="usuario_creado_exito">User created successfully.</string>
+
+    <!-- top10 -->
+    <string name="ultimo_login">Last login: %1$s</string>
+    <string name="ranking_titulo">Top 10 Players</string>
+
+
+    <string name="imagen_inicio_desc">Start screen image</string>
+
+    <string name="evento_victoria_titulo">🎉 Victory in the Game!</string>
+    <string name="evento_victoria_ubicacion">Android Device</string>
+    <string name="evento_victoria_descripcion">%1$s won with a score of %2$d.</string>
+
+    <string name="notificacion_victoria_titulo">🏆 You won, %1$s!</string>
+    <string name="notificacion_victoria_mensaje">Your new score is %1$d. Keep it up!</string>
+</resources>
