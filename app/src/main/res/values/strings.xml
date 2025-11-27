@@ -53,6 +53,11 @@
     <string name="captura_text">"capturar"</string>
     <string name="captura_desc">"capturar"</string>
 
+    <!-- Calendar -->
+    <string name="calendar_text">"calendario"</string>
+    <string name="calendar_desc">"calendario"</string>
+
+
     <!-- Help -->
     <string name="ayuda">"Centro de Ayuda"</string>
     <string name="reglas">"Consulta las reglas abajo 👇"</string>
