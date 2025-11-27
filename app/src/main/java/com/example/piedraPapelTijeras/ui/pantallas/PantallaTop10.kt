@@ -4,6 +4,7 @@ import com.example.piedraPapelTijeras.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -74,10 +75,21 @@ fun PantallaTop10(
 
                     // Último login traducido
                     Text(
-                        text = stringResource(R.string.ultimo_login, formatTimestamp(jugador.ultimaFecha)),
+                        text = stringResource(
+                            R.string.ultimo_login,
+                            formatTimestamp(jugador.ultimaFecha)
+                        ),
                         fontSize = 14.sp,
                         color = Color.DarkGray
                     )
+
+                    if (jugador.latitud != null && jugador.longitud != null) {
+                        Text(
+                            text = "📍 %.4f, %.4f".format(jugador.latitud, jugador.longitud),
+                            fontSize = 12.sp,
+                            color = Color(0xFF00695C) // Verde oscuro para diferenciarlo
+                        )
+                    }
                 }
 
                 // Puntuación
@@ -86,8 +98,9 @@ fun PantallaTop10(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
+
             }
-            Divider()
+            HorizontalDivider(color = Color.Gray.copy(alpha = 0.5f))
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -106,6 +119,9 @@ fun PantallaTop10(
         )
     }
 }
+
+
+
 
 
 

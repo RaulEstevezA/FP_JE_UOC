@@ -1,7 +1,11 @@
 package com.example.piedraPapelTijeras.ui.pantallas
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -80,6 +84,36 @@ fun PantallaJuego(
     // -- PARA CAPTURA Y PERMISOS
     val capturarPantalla = rememberCaptureController()
     val context = LocalContext.current
+
+    // -- Logica de Ubicacion
+
+    val peticionadorPermisosUbicacion = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = {permisos ->
+            val permisosConcedidos = permisos.values.reduce { acc, isGranted -> acc && isGranted}
+
+            if(permisosConcedidos){
+                Log.d("PantallaJuego", "Permiso ubicación concedido. Guardando coordenadas...")
+                // Llamamos a la función en el ViewModel
+                juegoViewModel.actualizarUbicacion(context)
+            } else {
+                Log.d("PantallaJuego", "Permiso ubicación denegado.")
+            }
+
+        }
+    )
+    //Lanzamos la peticion al iniciar la pantalla
+    LaunchedEffect(Unit) {
+        peticionadorPermisosUbicacion.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+    //Fin ubicación
+
+
 
 
     //envolvemos todo en el capturable que es la captura que realizara

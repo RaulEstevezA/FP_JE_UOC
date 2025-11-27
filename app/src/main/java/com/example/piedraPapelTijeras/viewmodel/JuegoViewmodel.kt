@@ -230,6 +230,48 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
             Log.e("JuegoViewModel", "Fallo al enviar notificación: Permiso denegado. ${e.message}")
         }
     }
+
+    fun actualizarUbicacion(context: android.content.Context){
+        viewModelScope.launch {
+            try{
+                //llamamos a nuestra classe GPS
+                val locationService = com.example.piedraPapelTijeras.ui.util.LocationService(context)
+                val ubicacion = locationService.getUserLocation()
+
+                if(ubicacion != null){
+                    //Si encontramos ubicacion, cogemos el jugador actual
+                    _jugadorActual.value?.let { jugador ->
+                        //creamos una copia del jugador pero con las coordenadas nuevas
+                        val jugadorActualizado = jugador.copy(
+                            latitud = ubicacion.latitude,
+                            longitud = ubicacion.longitude
+                        )
+                        //lo guardamos en la Bd
+                        repositorio.updateJugador(jugadorActualizado)
+
+                        //Lo actualizamos en la memoria para que conozca los nuevos datos
+                        _jugadorActual.value = jugadorActualizado
+
+                        android.util.Log.d(
+                            "GPS",
+                            "Ubicación guardada: ${ubicacion.latitude}, ${ubicacion.longitude}"
+                        )
+                    }
+
+                }else{
+                    android.util.Log.d(
+                        "GPS",
+                        "No se pudo obtener la ubicación (es null)"
+                    )
+                }
+            }catch (e: Exception){
+                android.util.Log.e(
+                    "GPS",
+                    "Error al intentar guardar la ubicación", e
+                )
+            }
+        }
+    }
 }
 
 
