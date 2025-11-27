@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.background
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,12 @@ fun PantallaAyuda(
     soundPlayer: SoundPlayer
 ) {
     //ruta al archivo local html
-    var urlLocal = "file:///android_asset/ayuda.html"
+    val idioma = LocalConfiguration.current.locales[0].language
+
+    val urlLocal = when (idioma) {
+        "en" -> "file:///android_asset/ayuda_en.html"
+        else -> "file:///android_asset/ayuda_es.html"
+    }
 
     //Columna que organiza la visulizacion de la parte Nativa
     Column(
