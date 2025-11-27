@@ -46,6 +46,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.data.model.EnumElegirJugada
+import com.example.piedraPapelTijeras.data.model.EnumResultado
 import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.componentes.AgregarSurface
 import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
@@ -162,49 +163,49 @@ fun PantallaJuego(
                 }
                 //animacion de resultado
                 AnimatedVisibility(
-                    visible = resultado.isNotEmpty(),
+                    visible = resultado != null,
                     enter = scaleIn(initialScale = 0.5f, animationSpec = tween(500)),
                     exit = scaleOut(targetScale = 0.5f, animationSpec = tween(500))
                 ) {
                     when (resultado) {
-                        "GANASTES" -> {
-                            LaunchedEffect("GANASTE") {
+
+                        EnumResultado.GANASTES -> {
+                            LaunchedEffect("ganaste_sound") {
                                 soundPlayer.playSounds(soundPlayer.sonidoVictoriaId)
                             }
                             Text(
-                                text = resultado,
+                                text = stringResource(R.string.ganastes),
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF2E7D32)
                             )
                         }
 
-                        "PERDISTES" -> {
-                            LaunchedEffect("PERDISTES") {
+                        EnumResultado.PERDISTES -> {
+                            LaunchedEffect("perdistes_sound") {
                                 soundPlayer.playSounds(soundPlayer.sonidoDerrotaId)
                             }
                             Text(
-                                text = resultado,
+                                text = stringResource(R.string.perdistes),
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFC62828)
                             )
-
                         }
 
-                        "EMPATE" -> {
-                            LaunchedEffect("EMPATE") {
+                        EnumResultado.EMPATE -> {
+                            LaunchedEffect("empate_sound") {
                                 soundPlayer.playSounds(soundPlayer.sonidoEmpateId)
                             }
                             Text(
-                                text = resultado,
+                                text = stringResource(R.string.empate),
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF888888)
                             )
-
                         }
 
+                        null -> Unit  // no mostrar nada
                     }
 
                 }
@@ -292,7 +293,7 @@ fun PantallaJuego(
                     enabled = !juegoEnCurso,
                 )
                 //Boton captura pantalla aparece al ganar
-                AnimatedVisibility(visible = resultado == "GANASTES") {
+                AnimatedVisibility(visible = resultado == EnumResultado.GANASTES) {
                     AgregarBoton(
 
                         onclick = {
@@ -346,17 +347,9 @@ fun PantallaJuego(
                     onClick = { }
 
                 )
-
-
             }
         }
     }
 }
-
-
-
-
-
-
 
 

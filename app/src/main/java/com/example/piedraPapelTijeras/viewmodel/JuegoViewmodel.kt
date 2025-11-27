@@ -20,6 +20,7 @@ import androidx.core.app.NotificationManagerCompat
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.example.piedraPapelTijeras.R
 
 private const val PUNTOS_GANAR = 5
 private const val PUNTOS_PERDER = -5
@@ -39,8 +40,8 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
     private val _puntuacion = MutableStateFlow(0)
     val puntuacion: StateFlow<Int> = _puntuacion
 
-    private val _resultado = MutableStateFlow("")
-    val resultado: StateFlow<String> = _resultado
+    private val _resultado = MutableStateFlow<EnumResultado?>(null)
+    val resultado: StateFlow<EnumResultado?> = _resultado
 
     private val _jugadaMaquina = MutableStateFlow<EnumElegirJugada?>(null)
     val jugadaMaquina: StateFlow<EnumElegirJugada?> = _jugadaMaquina
@@ -72,14 +73,14 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
                 _juegoEnCurso.value = true
 
                 _jugadaMaquina.value = null
-                _resultado.value = ""
+                _resultado.value = null
                 val jugadaMaquinaSeleccionada = elegirMaquina()
                 _jugadaMaquina.value = jugadaMaquinaSeleccionada
 
                 val resultadoEnum = comprobarJugada(jugadaJugador, jugadaMaquinaSeleccionada)
 
                 delay(500)
-                _resultado.value = resultadoEnum.name
+                _resultado.value = resultadoEnum
 
 
 
@@ -162,7 +163,7 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
 
     fun reiniciarParaSiguienteRonda() {
 
-        _resultado.value = ""
+        _resultado.value = null
 
         _jugadaMaquina.value = null
     }
@@ -172,9 +173,12 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
         val endTime = Calendar.getInstance().apply { add(Calendar.MINUTE, 30) }
         val intent = Intent(Intent.ACTION_INSERT).apply {
             data = CalendarContract.Events.CONTENT_URI
-            putExtra(CalendarContract.Events.TITLE, "🎉 ¡Victoria en el Juego!")
-            putExtra(CalendarContract.Events.EVENT_LOCATION, "Dispositivo Android")
-            putExtra(CalendarContract.Events.DESCRIPTION, "El jugador $playerName ganó con una puntuación de $score.")
+            putExtra(CalendarContract.Events.TITLE, context.getString(R.string.evento_victoria_titulo))
+            putExtra(CalendarContract.Events.EVENT_LOCATION, context.getString(R.string.evento_victoria_ubicacion))
+            putExtra(
+                CalendarContract.Events.DESCRIPTION,
+                context.getString(R.string.evento_victoria_descripcion, playerName, score)
+            )
 
             putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.timeInMillis)
             putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.timeInMillis)
@@ -206,8 +210,9 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
         }
     }
     private fun sendWinNotification(playerName: String, score: Int) {
-        val title = "🏆 ¡Ganaste, $playerName!"
-        val message = "Tu nueva puntuación es $score. ¡Sigue así!"
+        val title = context.getString(R.string.notificacion_victoria_titulo, playerName)
+        val message = context.getString(R.string.notificacion_victoria_mensaje, score)
+
         val iconId = android.R.drawable.ic_dialog_info
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(iconId)
