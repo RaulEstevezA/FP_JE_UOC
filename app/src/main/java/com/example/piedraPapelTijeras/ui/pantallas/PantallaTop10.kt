@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,6 +20,7 @@ import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.ui.util.formatTimestamp
+import com.example.piedraPapelTijeras.ui.util.localizedString
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 @Composable
@@ -47,7 +47,7 @@ fun PantallaTop10(
 
         // Título traducido
         Text(
-            text = stringResource(R.string.ranking_titulo),
+            text = localizedString(R.string.ranking_titulo),
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
@@ -74,7 +74,7 @@ fun PantallaTop10(
 
                     // Último login traducido
                     Text(
-                        text = stringResource(R.string.ultimo_login, formatTimestamp(jugador.ultimaFecha)),
+                        text = localizedString(R.string.ultimo_login, formatTimestamp(jugador.ultimaFecha)),
                         fontSize = 14.sp,
                         color = Color.DarkGray
                     )
@@ -99,8 +99,8 @@ fun PantallaTop10(
                 navController.popBackStack()
             },
             icon = null,
-            des = stringResource(R.string.volver_text_desc),
-            text = stringResource(R.string.volver_text),
+            des = localizedString(R.string.volver_text_desc),
+            text = localizedString(R.string.volver_text),
             fontsize = 40,
             modifier = Modifier.width(200.dp)
         )

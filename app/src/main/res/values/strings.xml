@@ -82,6 +82,7 @@
     <string name="notificacion_victoria_mensaje">Tu nueva puntuación es %1$d. ¡Sigue así!</string>
 
 
-
+    <string name="cambiar_idioma">Cambiar idioma</string>
+    <string name="change_language">Change language</string>
 
 </resources>

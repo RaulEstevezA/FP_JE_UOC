@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 
 import com.example.piedraPapelTijeras.repositorio.JugadorRepositorio
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
+import com.example.piedraPapelTijeras.viewmodel.LanguageViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
@@ -82,6 +83,18 @@ object Injeccion {
 
 
                 throw IllegalArgumentException("Clase de ViewModel desconocida: ${modelClass.name}")
+            }
+        }
+    }
+
+    fun provideLanguageViewModelFactory(context: Context): ViewModelProvider.Factory {
+        return object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(LanguageViewModel::class.java)) {
+                    @Suppress("UNCHECKED_CAST")
+                    return LanguageViewModel(context) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
             }
         }
     }

@@ -37,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,6 +50,7 @@ import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.componentes.AgregarSurface
 import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
+import com.example.piedraPapelTijeras.ui.util.localizedString
 import com.example.piedraPapelTijeras.ui.util.salvarFotoAGaleria
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
@@ -135,8 +135,8 @@ fun PantallaJuego(
                             navController.popBackStack()
                         },
                         icon = Icons.AutoMirrored.Filled.ArrowBack,
-                        des = stringResource(R.string.volver_text_desc),
-                        text = stringResource(R.string.volver_text),
+                        des = localizedString(R.string.volver_text_desc),
+                        text = localizedString(R.string.volver_text),
                         fontsize = 12,
                         modifier = Modifier
                             .padding(top = 16.dp)
@@ -174,7 +174,7 @@ fun PantallaJuego(
                                 soundPlayer.playSounds(soundPlayer.sonidoVictoriaId)
                             }
                             Text(
-                                text = stringResource(R.string.ganastes),
+                                text = localizedString(R.string.ganastes),
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF2E7D32)
@@ -186,7 +186,7 @@ fun PantallaJuego(
                                 soundPlayer.playSounds(soundPlayer.sonidoDerrotaId)
                             }
                             Text(
-                                text = stringResource(R.string.perdistes),
+                                text = localizedString(R.string.perdistes),
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFC62828)
@@ -198,7 +198,7 @@ fun PantallaJuego(
                                 soundPlayer.playSounds(soundPlayer.sonidoEmpateId)
                             }
                             Text(
-                                text = stringResource(R.string.empate),
+                                text = localizedString(R.string.empate),
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF888888)
@@ -214,7 +214,7 @@ fun PantallaJuego(
                 Spacer(modifier = Modifier.height(30.dp))
 
                 Text(
-                    text = stringResource(R.string.elige_jugada), fontSize = 30.sp
+                    text = localizedString(R.string.elige_jugada), fontSize = 30.sp
                 )
 
 
@@ -232,7 +232,7 @@ fun PantallaJuego(
                         shape = RoundedCornerShape(50.dp),
                         color = Color.Red,
                         imagen = painterResource(R.drawable.piedra),
-                        textdes = stringResource(R.string.piedra_text_desc),
+                        textdes = localizedString(R.string.piedra_text_desc),
                         seleccionado = jugadaJugador == EnumElegirJugada.PIEDRA,
                         onClick = {
                             jugadaJugador = EnumElegirJugada.PIEDRA
@@ -245,7 +245,7 @@ fun PantallaJuego(
                         shape = RoundedCornerShape(50.dp),
                         color = Color.Red,
                         imagen = painterResource(R.drawable.papel),
-                        textdes = stringResource(R.string.papel_text_desc),
+                        textdes = localizedString(R.string.papel_text_desc),
                         seleccionado = jugadaJugador == EnumElegirJugada.PAPEL,
                         onClick = {
                             jugadaJugador = EnumElegirJugada.PAPEL
@@ -258,7 +258,7 @@ fun PantallaJuego(
                         shape = RoundedCornerShape(50.dp),
                         color = Color.Red,
                         imagen = painterResource(R.drawable.tijeras),
-                        textdes = stringResource(R.string.tijeras_text_desc),
+                        textdes = localizedString(R.string.tijeras_text_desc),
                         seleccionado = jugadaJugador == EnumElegirJugada.TIJERA,
                         onClick = {
                             jugadaJugador = EnumElegirJugada.TIJERA
@@ -272,7 +272,7 @@ fun PantallaJuego(
                 Spacer(modifier = Modifier.height(15.dp))
                 //Texto un dos tres piedra papel....
                 Text(
-                    text = stringResource(R.string.un_dos_tres),
+                    text = localizedString(R.string.un_dos_tres),
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center
                 )
@@ -286,8 +286,8 @@ fun PantallaJuego(
                         soundPlayer.playSounds(soundPlayer.sonidoBotonId)
                     },
                     icon = null,
-                    des = stringResource(R.string.jugar_desc),
-                    text = stringResource(R.string.tres),
+                    des = localizedString(R.string.jugar_desc),
+                    text = localizedString(R.string.tres),
                     fontsize = 40,
                     modifier = Modifier.width(200.dp),
                     enabled = !juegoEnCurso,
@@ -304,8 +304,8 @@ fun PantallaJuego(
 
                         },
                         icon = Icons.Filled.PhotoCamera,
-                        des = stringResource(R.string.captura_desc),
-                        text = stringResource(R.string.captura_desc),
+                        des = localizedString(R.string.captura_desc),
+                        text = localizedString(R.string.captura_desc),
                         fontsize = 12,
                         modifier = Modifier
                             .padding(top = 10.dp)
@@ -316,7 +316,7 @@ fun PantallaJuego(
                 Spacer(modifier = Modifier.height(30.dp))
                 //Texto jugada maquina
                 Text(
-                    text = stringResource(R.string.jugada_maquina),
+                    text = localizedString(R.string.jugada_maquina),
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center
                 )
@@ -326,16 +326,16 @@ fun PantallaJuego(
 
                 val (imagen, textdes) = when (jugadaMaquina) {
 
-                    EnumElegirJugada.PIEDRA -> painterResource(R.drawable.piedra) to stringResource(
+                    EnumElegirJugada.PIEDRA -> painterResource(R.drawable.piedra) to localizedString(
                         R.string.piedra_text_desc
                     )
 
-                    EnumElegirJugada.PAPEL -> painterResource(R.drawable.papel) to stringResource(R.string.papel_text_desc)
-                    EnumElegirJugada.TIJERA -> painterResource(R.drawable.tijeras) to stringResource(
+                    EnumElegirJugada.PAPEL -> painterResource(R.drawable.papel) to localizedString(R.string.papel_text_desc)
+                    EnumElegirJugada.TIJERA -> painterResource(R.drawable.tijeras) to localizedString(
                         R.string.tijeras_text_desc
                     )
 
-                    null -> painterResource(R.drawable.interrogante) to stringResource(R.string.interrogante_text_desc)
+                    null -> painterResource(R.drawable.interrogante) to localizedString(R.string.interrogante_text_desc)
                 }
                 AgregarSurface(
                     modifier = Modifier.size(100.dp),

@@ -81,4 +81,7 @@
 
     <string name="notificacion_victoria_titulo">🏆 You won, %1$s!</string>
     <string name="notificacion_victoria_mensaje">Your new score is %1$d. Keep it up!</string>
+
+    <string name="cambiar_idioma">Change language</string>
+    <string name="change_language">Change language</string>
 </resources>
