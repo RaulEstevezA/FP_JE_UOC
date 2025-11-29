@@ -69,7 +69,7 @@ fun PantallaLogin(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp, 100.dp, 10.dp, 10.dp),
+                .padding(10.dp, 140.dp, 10.dp, 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
