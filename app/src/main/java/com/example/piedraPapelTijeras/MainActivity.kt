@@ -204,11 +204,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("MUSIC-DEBUG", "onResume() llamado")
+
         if (::musicViewModel.isInitialized) {
-            if (musicViewModel.isMusicPlaying.value) {
-                handler.postDelayed({
-                    musicViewModel.startMusic(applicationContext)
-                }, 250)
+            Log.d("MUSIC-DEBUG", "isMusicPlaying = ${musicViewModel.isMusicPlaying.value}")
+            Log.d("MUSIC-DEBUG", "wasSystemPaused = ${musicViewModel.wasSystemPaused.value}")
+
+            if (musicViewModel.isMusicPlaying.value &&
+                musicViewModel.wasSystemPaused.value
+            ) {
+                Log.d("MUSIC-DEBUG", "Reanudando música tras pausa del sistema")
+                musicViewModel.resumeAfterSystemPause(applicationContext)
             }
         }
     }
