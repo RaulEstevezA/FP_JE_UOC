@@ -4,6 +4,9 @@
 .idea/
 .DS_Store
 
+.gradle/
+build/
+
 # Local configuration
 local.properties
 .idea/workspace.xml
