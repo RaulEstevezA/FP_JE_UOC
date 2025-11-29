@@ -1,13 +1,10 @@
 package com.example.piedraPapelTijeras
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
+
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import androidx.activity.ComponentActivity
+import androidx
+
+.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,10 +33,18 @@ import com.example.piedraPapelTijeras.viewmodel.LanguageViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
-import java.util.Locale
+import com.example.piedraPapelTijeras.ui.util.SoundPlayer
+import androidx.activity.result.contract.ActivityResultContracts
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.os.Build
+import android.util.Log
+import android.os.Handler
+import android.os.Looper
+import com.example.piedraPapelTijeras.ui.pantallas.PantallaTop10
 
 class MainActivity : ComponentActivity() {
-
     private lateinit var juegoViewModel: JuegoViewModel
     private lateinit var musicViewModel: MusicViewModel
     private val handler = Handler(Looper.getMainLooper())
@@ -138,56 +143,52 @@ class MainActivity : ComponentActivity() {
                         DisposableEffect(Unit) {
                             onDispose { soundPlayer.release() }
                         }
+                    }
 
-                        NavHost(
-                            navController = navController,
-                            startDestination = "principal"
-                        ) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = "principal"
+                    ) {
+                        composable("principal") {
+                            PantallaPrincipal(
+                                navController = navController,
+                                musicViewModel = this@MainActivity.musicViewModel,
+                                soundPlayer = soundPlayer
 
-                            composable("principal") {
-                                PantallaPrincipal(
-                                    navController = navController,
-                                    musicViewModel = musicViewModel,
-                                    soundPlayer = soundPlayer,
-                                    languageViewModel = languageViewModel
-                                )
-                            }
+                            )
+                        }
+                        composable("login") {
+                            PantallaLogin(
+                                loginViewModel = loginViewModel,
+                                top10ViewModel = top10ViewModel,
+                                navController = navController,
+                                musicViewModel = this@MainActivity.musicViewModel,
+                                soundPlayer = soundPlayer
+                            )
 
-                            composable("login") {
-                                PantallaLogin(
-                                    loginViewModel = loginViewModel,
-                                    top10ViewModel = top10ViewModel,
-                                    navController = navController,
-                                    musicViewModel = musicViewModel,
-                                    soundPlayer = soundPlayer
-                                )
-                            }
-
-                            composable("juego") {
-                                PantallaJuego(
-                                    juegoViewModel = juegoViewModel,
-                                    navController = navController,
-                                    musicViewModel = musicViewModel,
-                                    soundPlayer = soundPlayer
-                                )
-                            }
-
-                            composable("top10") {
-                                PantallaTop10(
-                                    top10ViewModel = top10ViewModel,
-                                    navController = navController,
-                                    musicViewModel = musicViewModel,
-                                    soundPlayer = soundPlayer
-                                )
-                            }
-
-                            composable("ayuda") {
-                                PantallaAyuda(
-                                    navController = navController,
-                                    musicViewModel = musicViewModel,
-                                    soundPlayer = soundPlayer
-                                )
-                            }
+                        }
+                        composable("juego") {
+                            PantallaJuego(
+                                juegoViewModel = this@MainActivity.juegoViewModel,
+                                navController = navController,
+                                musicViewModel = this@MainActivity.musicViewModel,
+                                soundPlayer = soundPlayer
+                            )
+                        }
+                        composable("ayuda") {
+                            PantallaAyuda(
+                                navController = navController,
+                                musicViewModel = this@MainActivity.musicViewModel,
+                                soundPlayer = soundPlayer
+                            )
+                        }
+                        composable("top10") {
+                            PantallaTop10(
+                                top10ViewModel = top10ViewModel,
+                                navController = navController,
+                                musicViewModel = this@MainActivity.musicViewModel,
+                                soundPlayer = soundPlayer
+                            )
                         }
                     }
                 }
@@ -197,6 +198,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
+
         if (::musicViewModel.isInitialized) {
             musicViewModel.systemPauseMusic()
         }

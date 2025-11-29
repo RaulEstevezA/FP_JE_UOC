@@ -1,7 +1,11 @@
 package com.example.piedraPapelTijeras.ui.pantallas
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -23,7 +27,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -77,6 +85,36 @@ fun PantallaJuego(
     val capturarPantalla = rememberCaptureController()
     val context = LocalContext.current
 
+    // -- Logica de Ubicacion
+
+    val peticionadorPermisosUbicacion = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = {permisos ->
+            val permisosConcedidos = permisos.values.reduce { acc, isGranted -> acc && isGranted}
+
+            if(permisosConcedidos){
+                Log.d("PantallaJuego", "Permiso ubicación concedido. Guardando coordenadas...")
+                // Llamamos a la función en el ViewModel
+                juegoViewModel.actualizarUbicacion(context)
+            } else {
+                Log.d("PantallaJuego", "Permiso ubicación denegado.")
+            }
+
+        }
+    )
+    //Lanzamos la peticion al iniciar la pantalla
+    LaunchedEffect(Unit) {
+        peticionadorPermisosUbicacion.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+    //Fin ubicación
+
+
+
 
     //envolvemos todo en el capturable que es la captura que realizara
     Capturable(
@@ -109,25 +147,22 @@ fun PantallaJuego(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFFA8E6CF))
-        ) {
+        ) { // Un padding general para que no se pegue a los bordes
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp), // Un padding general para que no se pegue a los bordes
+                    .padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 40.dp),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     //Boton musica on/off
                     CambiarBotonMusica(musicViewModel = musicViewModel)
-
                     Spacer(modifier = Modifier.weight(1f))
-
-
                     //boton volver
                     AgregarBoton(
                         onclick = {
@@ -156,7 +191,7 @@ fun PantallaJuego(
                     Image(
                         painter = painterResource(R.drawable.coins),
                         contentDescription = null,
-                        modifier = Modifier.size(120.dp)
+                        modifier = Modifier.size(80.dp)
 
                     )
 
@@ -211,14 +246,14 @@ fun PantallaJuego(
                 }
                 // Text elegir jugada
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
                     text = localizedString(R.string.elige_jugada), fontSize = 30.sp
                 )
+                Spacer(modifier = Modifier.height(10.dp))
 
-
-                Spacer(modifier = Modifier.height(30.dp))
+                val tamañoBoton = 85.dp
 
                 //eleccion jugada piedra papel o tijeras
                 Row(
@@ -228,7 +263,7 @@ fun PantallaJuego(
 
                 ) {
                     AgregarSurface(
-                        modifier = Modifier.size(100.dp),
+                        modifier = Modifier.size(tamañoBoton),
                         shape = RoundedCornerShape(50.dp),
                         color = Color.Red,
                         imagen = painterResource(R.drawable.piedra),
@@ -241,7 +276,7 @@ fun PantallaJuego(
 
                     )
                     AgregarSurface(
-                        modifier = Modifier.size(100.dp),
+                        modifier = Modifier.size(tamañoBoton),
                         shape = RoundedCornerShape(50.dp),
                         color = Color.Red,
                         imagen = painterResource(R.drawable.papel),
@@ -254,7 +289,7 @@ fun PantallaJuego(
 
                     )
                     AgregarSurface(
-                        modifier = Modifier.size(100.dp),
+                        modifier = Modifier.size(tamañoBoton),
                         shape = RoundedCornerShape(50.dp),
                         color = Color.Red,
                         imagen = painterResource(R.drawable.tijeras),
@@ -269,7 +304,7 @@ fun PantallaJuego(
 
                 }
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 //Texto un dos tres piedra papel....
                 Text(
                     text = localizedString(R.string.un_dos_tres),
@@ -277,7 +312,7 @@ fun PantallaJuego(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(35.dp))
 
                 //Boton jugar
                 AgregarBoton(
@@ -289,34 +324,71 @@ fun PantallaJuego(
                     des = localizedString(R.string.jugar_desc),
                     text = localizedString(R.string.tres),
                     fontsize = 40,
-                    modifier = Modifier.width(200.dp),
+                    modifier = Modifier.width(180.dp),
                     enabled = !juegoEnCurso,
                 )
                 //Boton captura pantalla aparece al ganar
                 AnimatedVisibility(visible = resultado == EnumResultado.GANASTES) {
-                    AgregarBoton(
-
-                        onclick = {
-                            soundPlayer.playSounds(soundPlayer.sonidoFotoId)
-                            //capturar victoria
-                            capturarPantalla.capture()
-
-
-                        },
-                        icon = Icons.Filled.PhotoCamera,
-                        des = localizedString(R.string.captura_desc),
-                        text = localizedString(R.string.captura_desc),
-                        fontsize = 12,
+                    Row(
                         modifier = Modifier
-                            .padding(top = 10.dp)
-                            .width(130.dp)
-                    )
+                            .fillMaxWidth()
+                            .padding(top = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        //Boton Foto
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            IconButton(
+                                onClick = {
+                                    soundPlayer.playSounds(soundPlayer.sonidoFotoId)
+                                    //capturar victoria
+                                    capturarPantalla.capture()
+                                },
+                                modifier = Modifier.size(48.dp)
+                            ) {
+                                Icon(
+                                    Icons.Filled.PhotoCamera,
+                                    contentDescription = stringResource(R.string.captura_desc),
+                                    tint = Color.DarkGray
+                                )
+                            }
+                            Text(
+                                stringResource(R.string.captura_text),
+                                fontSize = 12.sp
+                            )
+
+
+                        }
+                        //Boton Calendario
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            IconButton(
+                                onClick = {
+                                    val nombre =
+                                        juegoViewModel.jugadorActual.value?.mail ?: "Jugador"
+                                    val puntos = juegoViewModel.puntuacion.value
+                                    juegoViewModel.saveWinToCalendar(nombre, puntos)
+                                },
+                                modifier = Modifier.size(48.dp)
+                            ) {
+                                Icon(
+                                    Icons.Filled.Event,
+                                    contentDescription = stringResource(R.string.calendar_desc),
+                                    tint = Color.DarkGray
+                                )
+                            }
+                            Text(
+                                stringResource(R.string.calendar_text),
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(30.dp))
                 //Texto jugada maquina
                 Text(
-                    text = localizedString(R.string.jugada_maquina),
+                    text = stringResource(R.string.jugada_maquina),
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center
                 )
@@ -326,19 +398,22 @@ fun PantallaJuego(
 
                 val (imagen, textdes) = when (jugadaMaquina) {
 
-                    EnumElegirJugada.PIEDRA -> painterResource(R.drawable.piedra) to localizedString(
+                    EnumElegirJugada.PIEDRA -> painterResource(R.drawable.piedra) to stringResource(
                         R.string.piedra_text_desc
                     )
 
-                    EnumElegirJugada.PAPEL -> painterResource(R.drawable.papel) to localizedString(R.string.papel_text_desc)
-                    EnumElegirJugada.TIJERA -> painterResource(R.drawable.tijeras) to localizedString(
+                    EnumElegirJugada.PAPEL -> painterResource(R.drawable.papel) to stringResource(
+                        R.string.papel_text_desc
+                    )
+
+                    EnumElegirJugada.TIJERA -> painterResource(R.drawable.tijeras) to stringResource(
                         R.string.tijeras_text_desc
                     )
 
-                    null -> painterResource(R.drawable.interrogante) to localizedString(R.string.interrogante_text_desc)
+                    null -> painterResource(R.drawable.interrogante) to stringResource(R.string.interrogante_text_desc)
                 }
                 AgregarSurface(
-                    modifier = Modifier.size(100.dp),
+                    modifier = Modifier.size(90.dp),
                     shape = RoundedCornerShape(50.dp),
                     color = Color.Red,
                     imagen = imagen,
