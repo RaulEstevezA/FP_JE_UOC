@@ -1,10 +1,13 @@
 package com.example.piedraPapelTijeras
 
-
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import androidx
-
-.activity.ComponentActivity
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.piedraPapelTijeras.ui.componentes.BackgroundMusicPlayer
+import com.example.piedraPapelTijeras.ui.util.BackgroundMusicPlayer
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaAyuda
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaJuego
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaLogin
@@ -33,22 +36,15 @@ import com.example.piedraPapelTijeras.viewmodel.LanguageViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
-import com.example.piedraPapelTijeras.ui.util.SoundPlayer
-import androidx.activity.result.contract.ActivityResultContracts
-import android.content.pm.PackageManager
-import androidx.core.content.ContextCompat
-import android.Manifest
-import android.os.Build
-import android.util.Log
-import android.os.Handler
-import android.os.Looper
-import com.example.piedraPapelTijeras.ui.pantallas.PantallaTop10
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+
     private lateinit var juegoViewModel: JuegoViewModel
     private lateinit var musicViewModel: MusicViewModel
     private val handler = Handler(Looper.getMainLooper())
 
+    // permiso calendario
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -59,6 +55,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    // permiso notificaciones (Android 13+)
     private val requestNotificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -72,6 +69,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // pedir permiso calendario
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.WRITE_CALENDAR
@@ -80,6 +78,7 @@ class MainActivity : ComponentActivity() {
             requestPermissionLauncher.launch(Manifest.permission.WRITE_CALENDAR)
         }
 
+        // pedir permiso notificaciones en Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -92,6 +91,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
+            // viewmodel de idioma
             val languageViewModel: LanguageViewModel = viewModel(
                 factory = Injeccion.provideLanguageViewModelFactory(
                     context = applicationContext
@@ -100,9 +100,9 @@ class MainActivity : ComponentActivity() {
 
             val idiomaState = languageViewModel.idiomaActual.collectAsState()
 
+            // enum → Locale
             val currentLocale =
-                if (idiomaState.value.name == "ES") Locale("es")
-                else Locale("en")
+                if (idiomaState.value.name == "ES") Locale("es") else Locale("en")
 
             CompositionLocalProvider(
                 LocalAppLocale provides currentLocale
@@ -143,52 +143,51 @@ class MainActivity : ComponentActivity() {
                         DisposableEffect(Unit) {
                             onDispose { soundPlayer.release() }
                         }
-                    }
 
-                    NavHost(
-                        navController = navController,
-                        startDestination = "principal"
-                    ) {
-                        composable("principal") {
-                            PantallaPrincipal(
-                                navController = navController,
-                                musicViewModel = this@MainActivity.musicViewModel,
-                                soundPlayer = soundPlayer
-
-                            )
-                        }
-                        composable("login") {
-                            PantallaLogin(
-                                loginViewModel = loginViewModel,
-                                top10ViewModel = top10ViewModel,
-                                navController = navController,
-                                musicViewModel = this@MainActivity.musicViewModel,
-                                soundPlayer = soundPlayer
-                            )
-
-                        }
-                        composable("juego") {
-                            PantallaJuego(
-                                juegoViewModel = this@MainActivity.juegoViewModel,
-                                navController = navController,
-                                musicViewModel = this@MainActivity.musicViewModel,
-                                soundPlayer = soundPlayer
-                            )
-                        }
-                        composable("ayuda") {
-                            PantallaAyuda(
-                                navController = navController,
-                                musicViewModel = this@MainActivity.musicViewModel,
-                                soundPlayer = soundPlayer
-                            )
-                        }
-                        composable("top10") {
-                            PantallaTop10(
-                                top10ViewModel = top10ViewModel,
-                                navController = navController,
-                                musicViewModel = this@MainActivity.musicViewModel,
-                                soundPlayer = soundPlayer
-                            )
+                        NavHost(
+                            navController = navController,
+                            startDestination = "principal"
+                        ) {
+                            composable("principal") {
+                                PantallaPrincipal(
+                                    navController = navController,
+                                    musicViewModel = musicViewModel,
+                                    soundPlayer = soundPlayer,
+                                    languageViewModel = languageViewModel
+                                )
+                            }
+                            composable("login") {
+                                PantallaLogin(
+                                    loginViewModel = loginViewModel,
+                                    top10ViewModel = top10ViewModel,
+                                    navController = navController,
+                                    musicViewModel = musicViewModel,
+                                    soundPlayer = soundPlayer
+                                )
+                            }
+                            composable("juego") {
+                                PantallaJuego(
+                                    juegoViewModel = juegoViewModel,
+                                    navController = navController,
+                                    musicViewModel = musicViewModel,
+                                    soundPlayer = soundPlayer
+                                )
+                            }
+                            composable("top10") {
+                                PantallaTop10(
+                                    top10ViewModel = top10ViewModel,
+                                    navController = navController,
+                                    musicViewModel = musicViewModel,
+                                    soundPlayer = soundPlayer
+                                )
+                            }
+                            composable("ayuda") {
+                                PantallaAyuda(
+                                    navController = navController,
+                                    musicViewModel = musicViewModel,
+                                    soundPlayer = soundPlayer
+                                )
+                            }
                         }
                     }
                 }
@@ -198,7 +197,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-
         if (::musicViewModel.isInitialized) {
             musicViewModel.systemPauseMusic()
         }

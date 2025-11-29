@@ -21,7 +21,7 @@ import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.data.model.Idioma
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.CambiarBotonMusica
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.ui.util.localizedString
 import com.example.piedraPapelTijeras.viewmodel.LanguageViewModel

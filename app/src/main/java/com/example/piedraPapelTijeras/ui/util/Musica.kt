@@ -1,4 +1,4 @@
-package com.example.piedraPapelTijeras.ui.componentes
+package com.example.piedraPapelTijeras.ui.util
 
 import kotlin.Triple
 import android.media.MediaPlayer
@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.MusicOff
 import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue

@@ -76,11 +76,10 @@ fun PantallaTop10(
 
                     // Último login traducido
                     Text(
-                        text = stringResource(
+                        text = localizedString(
                             R.string.ultimo_login,
                             formatTimestamp(jugador.ultimaFecha)
                         ),
-                        text = localizedString(R.string.ultimo_login, formatTimestamp(jugador.ultimaFecha)),
                         fontSize = 14.sp,
                         color = Color.DarkGray
                     )
