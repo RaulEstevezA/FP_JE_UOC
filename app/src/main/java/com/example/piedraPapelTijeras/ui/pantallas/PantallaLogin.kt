@@ -10,19 +10,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
-import com.example.piedraPapelTijeras.ui.componentes.CambiarBotonMusica
+import com.example.piedraPapelTijeras.ui.util.CambiarBotonMusica
 import com.example.piedraPapelTijeras.ui.mensajes.LoginMessage
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 import androidx.compose.runtime.saveable.rememberSaveable
+import com.example.piedraPapelTijeras.ui.util.localizedString
 
 @Composable
 fun PantallaLogin(
@@ -44,9 +44,9 @@ fun PantallaLogin(
 
     //   MENSAJE TRADUCIDO
     val mensajeTraducido = when (dialogoMensaje) {
-        is LoginMessage.EmailInvalido -> stringResource(R.string.error_correo_invalido)
-        is LoginMessage.UsuarioNoRegistrado -> stringResource(R.string.error_usuario_no_registrado)
-        is LoginMessage.UsuarioCreado -> stringResource(R.string.usuario_creado_exito)
+        is LoginMessage.EmailInvalido -> localizedString(R.string.error_correo_invalido)
+        is LoginMessage.UsuarioNoRegistrado -> localizedString(R.string.error_usuario_no_registrado)
+        is LoginMessage.UsuarioCreado -> localizedString(R.string.usuario_creado_exito)
         else -> ""
     }
 
@@ -69,7 +69,7 @@ fun PantallaLogin(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp, 100.dp, 10.dp, 10.dp),
+                .padding(10.dp, 140.dp, 10.dp, 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -83,7 +83,7 @@ fun PantallaLogin(
                     disabledContainerColor = Color.Gray,
                     errorContainerColor = Color.Red,
                 ),
-                label = { Text(stringResource(R.string.login_textField_label)) }
+                label = { Text(localizedString(R.string.login_textField_label)) }
             )
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -99,8 +99,8 @@ fun PantallaLogin(
                     )
                 },
                 icon = Icons.Default.PlayArrow,
-                des = stringResource(R.string.jugar_desc),
-                text = stringResource(R.string.login_text),
+                des = localizedString(R.string.jugar_desc),
+                text = localizedString(R.string.login_text),
                 modifier = Modifier.width(200.dp)
             )
 
@@ -112,8 +112,8 @@ fun PantallaLogin(
                     navController.popBackStack()
                 },
                 icon = Icons.AutoMirrored.Filled.ArrowBack,
-                des = stringResource(R.string.volver_text_desc),
-                text = stringResource(R.string.volver_text),
+                des = localizedString(R.string.volver_text_desc),
+                text = localizedString(R.string.volver_text),
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .width(150.dp)
@@ -124,11 +124,11 @@ fun PantallaLogin(
             if (showInvalidEmailDialog) {
                 AlertDialog(
                     onDismissRequest = { loginViewModel.cerrarDialogo() },
-                    title = { Text(stringResource(R.string.error_correo_invalido)) },
+                    title = { Text(localizedString(R.string.error_correo_invalido)) },
                     text = { Text(mensajeTraducido) },
                     confirmButton = {
                         Button(onClick = { loginViewModel.cerrarDialogo() }) {
-                            Text(stringResource(R.string.aceptar))
+                            Text(localizedString(R.string.aceptar))
                         }
                     }
                 )
@@ -140,7 +140,7 @@ fun PantallaLogin(
                 val currentTextLogin = textLogin
                 AlertDialog(
                     onDismissRequest = { loginViewModel.cerrarDialogo() },
-                    title = { Text(stringResource(R.string.usuario_no_registrado)) },
+                    title = { Text(localizedString(R.string.usuario_no_registrado)) },
                     text = { Text(mensajeTraducido) },
                     confirmButton = {
                         Button(onClick = {
@@ -151,12 +151,12 @@ fun PantallaLogin(
                             )
                             loginViewModel.cerrarDialogo()
                         }) {
-                            Text(stringResource(R.string.crear))
+                            Text(localizedString(R.string.crear))
                         }
                     },
                     dismissButton = {
                         Button(onClick = { loginViewModel.cerrarDialogo() }) {
-                            Text(stringResource(R.string.cancelar))
+                            Text(localizedString(R.string.cancelar))
                         }
                     }
                 )

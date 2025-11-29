@@ -22,6 +22,7 @@ import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.ui.util.formatTimestamp
+import com.example.piedraPapelTijeras.ui.util.localizedString
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 
 @Composable
@@ -48,7 +49,7 @@ fun PantallaTop10(
 
         // Título traducido
         Text(
-            text = stringResource(R.string.ranking_titulo),
+            text = localizedString(R.string.ranking_titulo),
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
@@ -75,7 +76,7 @@ fun PantallaTop10(
 
                     // Último login traducido
                     Text(
-                        text = stringResource(
+                        text = localizedString(
                             R.string.ultimo_login,
                             formatTimestamp(jugador.ultimaFecha)
                         ),
@@ -112,16 +113,13 @@ fun PantallaTop10(
                 navController.popBackStack()
             },
             icon = null,
-            des = stringResource(R.string.volver_text_desc),
-            text = stringResource(R.string.volver_text),
+            des = localizedString(R.string.volver_text_desc),
+            text = localizedString(R.string.volver_text),
             fontsize = 40,
             modifier = Modifier.width(200.dp)
         )
     }
 }
-
-
-
 
 
 

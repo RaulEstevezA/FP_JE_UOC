@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +32,7 @@ import androidx.navigation.NavController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
+import com.example.piedraPapelTijeras.ui.util.localizedString
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 
 //Hemos creado una pantalla ayuda hibrida por una lado usamos la parte nativa
@@ -78,7 +78,7 @@ fun PantallaAyuda(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.volver_text_desc),
+                        contentDescription = localizedString(R.string.volver_text_desc),
                         tint = Color(0xFF004D40),
                         modifier = Modifier.size(32.dp)
                     )
@@ -87,14 +87,14 @@ fun PantallaAyuda(
                 Column {
                     //titulo
                     Text(
-                        text = stringResource(R.string.ayuda),
+                        text = localizedString(R.string.ayuda),
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF004D40)
 
                     )
                     Text(
-                        text = stringResource(R.string.reglas),
+                        text = localizedString(R.string.reglas),
                         fontSize = 14.sp,
                         color = Color.Gray
                     )
