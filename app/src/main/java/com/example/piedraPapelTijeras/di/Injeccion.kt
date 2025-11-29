@@ -60,7 +60,7 @@ object Injeccion {
 
 
                     @Suppress("UNCHECKED_CAST")
-                    return LoginViewModel(repositorio) as T
+                    return LoginViewModel(repositorio, context) as T
                 }
 
 
