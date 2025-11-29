@@ -56,12 +56,12 @@
     <!-- Help -->
     <string name="ayuda">"Centro de Ayuda"</string>
     <string name="reglas">"Consulta las reglas abajo 👇"</string>
-    <string name="ayuda_text">"ayuda"</string>
-    <string name="ayuda_desc">"ayuda"</string>
+    <string name="ayuda_text">"Ayuda"</string>
+    <string name="ayuda_desc">"Ayuda"</string>
 
     <!-- Music -->
-    <string name="cambiar_musica_des">"cambiar música"</string>
-    <string name="cambiar_musica_text">"cambiar música"</string>
+    <string name="cambiar_musica_des">"Cambiar música"</string>
+    <string name="cambiar_musica_text">"Cambiar música"</string>
 
     <!-- eMail -->
     <string name="error_correo_invalido">El correo no es válido debe ser un formato valido y gmail.</string>

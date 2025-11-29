@@ -71,7 +71,7 @@ fun PantallaPrincipal(
                 ),
                 modifier = Modifier
                     .padding(bottom = 20.dp)
-                    .width(200.dp)
+                    .width(220.dp)
             )
 
             Row(
