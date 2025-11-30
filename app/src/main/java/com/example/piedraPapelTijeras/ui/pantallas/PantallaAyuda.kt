@@ -31,6 +31,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.ui.AgregarBoton
+import com.example.piedraPapelTijeras.ui.util.LocalAppLocale
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
 import com.example.piedraPapelTijeras.ui.util.localizedString
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
@@ -46,7 +47,7 @@ fun PantallaAyuda(
     soundPlayer: SoundPlayer
 ) {
     //ruta al archivo local html
-    val idioma = LocalConfiguration.current.locales[0].language
+    val idioma = LocalAppLocale.current.language
 
     val urlLocal = when (idioma) {
         "en" -> "file:///android_asset/ayuda_en.html"
