@@ -20,6 +20,11 @@ lifecycleViewmodelKtx = "2.9.4"
 playServicesMaps = "19.2.0"
 ui = "1.9.3"
 
+#Firebase versions
+googleServices = "4.4.2"
+firebaseBom = "33.1.2"
+
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -50,8 +55,15 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 
+# Firebase Libraries
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
+# Plugins Firebase
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }

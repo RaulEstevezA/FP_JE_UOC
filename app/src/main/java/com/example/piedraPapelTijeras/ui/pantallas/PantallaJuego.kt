@@ -16,6 +16,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -56,6 +58,9 @@ fun PantallaJuego(
     val puntuacion by juegoViewModel.puntuacion.collectAsState()
     val resultado by juegoViewModel.resultado.collectAsState()
     val juegoEnCurso by juegoViewModel.juegoEnCurso.collectAsState()
+    
+    //bote en tiempo real
+    val bote by juegoViewModel.bote.collectAsState()
 
     val capturarPantalla = rememberCaptureController()
     val context = LocalContext.current
@@ -132,18 +137,39 @@ fun PantallaJuego(
                     )
                 }
 
+                // MARCADOR (PUNTOS Y BOTE)
                 Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = puntuacion.toString(), fontSize = 50.sp)
+                    // Puntos del Jugador
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = puntuacion.toString(), fontSize = 40.sp, fontWeight = FontWeight.Bold)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Image(
+                            painter = painterResource(R.drawable.coins),
+                            contentDescription = null,
+                            modifier = Modifier.size(50.dp)
+                        )
+                    }
 
-                    Image(
-                        painter = painterResource(R.drawable.coins),
-                        contentDescription = null,
-                        modifier = Modifier.size(80.dp)
-                    )
+                    // Bote Acumulado
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFD54F)),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = localizedString(R.string.bote_text), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black)
+                            Text(text = "$bote", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp, color = Color.Black)
+                        }
+                    }
                 }
+                // -------------------------------------------
 
                 AnimatedVisibility(
                     visible = resultado != null,
@@ -162,12 +188,23 @@ fun PantallaJuego(
                             LaunchedEffect(Unit) {
                                 soundPlayer.playSounds(soundPlayer.sonidoVictoriaId)
                             }
-                            Text(
-                                text = localizedString(R.string.ganastes),
-                                fontSize = 48.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF2E7D32)
-                            )
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = localizedString(R.string.ganastes),
+                                    fontSize = 48.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF2E7D32)
+                                )
+                                // Mensaje extra si ganas el bote
+                                if (bote > 0) {
+                                    Text(
+                                        text = "+ $bote del Bote!",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color(0xFFE65100)
+                                    )
+                                }
+                            }
                         }
 
                         EnumResultado.PERDISTES -> {
@@ -302,13 +339,13 @@ fun PantallaJuego(
                                     tint = Color.DarkGray
                                 )
                             }
-                            Text(localizedString(R.string.captura_text), fontSize = 12.sp)
+                            Text(localizedString(R.string.captura_text), fontSize = 12.sp) //
                         }
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
                                 onClick = {
-                                    val nombre = juegoViewModel.jugadorActual.value?.mail ?: "Jugador"
+                                    val nombre = juegoViewModel.jugadorFirebase.value?.nombre ?: "Jugador"
                                     val puntos = juegoViewModel.puntuacion.value
                                     juegoViewModel.saveWinToCalendar(nombre, puntos)
                                 },
