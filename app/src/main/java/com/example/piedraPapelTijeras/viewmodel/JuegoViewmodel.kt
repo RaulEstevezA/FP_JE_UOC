@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.piedraPapelTijeras.data.model.EnumElegirJugada
 import com.example.piedraPapelTijeras.data.model.EnumResultado
-import com.example.piedraPapelTijeras.data.model.Jugador
 import com.example.piedraPapelTijeras.repositorio.JugadorRepositorio
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +21,7 @@ import android.app.NotificationManager
 import android.os.Build
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.data.model.JugadorFirebase
-import com.example.piedraPapelTijeras.data.repositorio.RankingRepositorio
+import com.example.piedraPapelTijeras.repositorio.RankingRepositorio
 import kotlinx.coroutines.flow.first
 
 // REGLAS DEL JUEGO
@@ -57,6 +56,10 @@ class JuegoViewModel(private val jugadorRepositorio: JugadorRepositorio,
     val jugadorFirebase: StateFlow<JugadorFirebase?> = _jugadorFirebase
 
     private val rankingRepository = RankingRepositorio()
+
+    //REST
+    private val _resultadoRest = MutableStateFlow<String?>(null)
+    val resultadoRest: StateFlow<String?> = _resultadoRest
 
     init {
         createNotificationChannel()
@@ -238,6 +241,39 @@ class JuegoViewModel(private val jugadorRepositorio: JugadorRepositorio,
             }
         } catch (e: SecurityException) {
             Log.e("JuegoViewModel", "Fallo al enviar notificación: Permiso denegado. ${e.message}")
+        }
+    }
+
+    //Funcion para realizar llamada REST
+    fun probarLlamadaRest() {
+        //  el ID del proyecto  de Firebase.
+        val projectId = "piedrapapeltijera-60fb9"
+
+        _resultadoRest.value = ""
+
+        viewModelScope.launch {
+            try {
+                // fábrica de Retrofit realizamos llamada
+                val respuesta = com.example.piedraPapelTijeras.data.network.RetrofitInstance.api.getBote(projectId)
+
+                // Comprobamos si la respuesta fue exitosa
+                if (respuesta.isSuccessful) {
+                    val cuerpo = respuesta.body()
+                    if (cuerpo != null) {
+                        val puntos = cuerpo.fields?.puntos?.value
+                        // Escribimos el resultado
+                        _resultadoRest.value = "Éxito con REST: El bote tiene $puntos puntos."
+                    } else {
+                        _resultadoRest.value = "Error: Respuesta exitosa pero sin datos."
+                    }
+                } else {
+                    // Si la respuesta no fue exitosa
+                    _resultadoRest.value = "Error REST: Código ${respuesta.code()}"
+                }
+            } catch (e: Exception) {
+                // Si hay un error de red (sin internet, etc.)
+                _resultadoRest.value = "Error de Red: ${e.message}"
+            }
         }
     }
 }

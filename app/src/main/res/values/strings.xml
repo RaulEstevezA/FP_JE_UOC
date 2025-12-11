@@ -79,6 +79,17 @@
     <string name="ultimo_login">Último login: %1$s</string>
     <string name="ranking_titulo">Top 10 Jugadores</string>
 
+    <!-- REST -->
+
+    <string name="prueba_rest">Probar REST</string>
+    <string name="desc_rest">Probar REST</string>
+
+    <!-- En strings.xml -->
+    <string name="mensaje_bote_rest">El bote actual es: %1$s</string>
+
+
+
+
     <string name="imagen_inicio_desc">Imagen de inicio</string>
 
     <string name="evento_victoria_titulo">🎉 ¡Victoria en el Juego!</string>

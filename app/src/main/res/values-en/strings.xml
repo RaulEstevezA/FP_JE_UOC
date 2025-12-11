@@ -77,6 +77,13 @@
     <string name="ultimo_login">Last login: %1$s</string>
     <string name="ranking_titulo">Top 10 Players</string>
 
+    <!-- REST -->
+
+    <string name="prueba_rest">Try REST</string>
+    <string name="desc_rest">Try REST</string>
+
+
+
 
     <string name="imagen_inicio_desc">Start screen image</string>
 

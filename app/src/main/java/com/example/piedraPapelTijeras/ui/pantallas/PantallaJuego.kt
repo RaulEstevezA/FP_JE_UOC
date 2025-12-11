@@ -58,9 +58,11 @@ fun PantallaJuego(
     val puntuacion by juegoViewModel.puntuacion.collectAsState()
     val resultado by juegoViewModel.resultado.collectAsState()
     val juegoEnCurso by juegoViewModel.juegoEnCurso.collectAsState()
-    
+
     //bote en tiempo real
     val bote by juegoViewModel.bote.collectAsState()
+    //REST
+    val resultadoRest by juegoViewModel.resultadoRest.collectAsState()
 
     val capturarPantalla = rememberCaptureController()
     val context = LocalContext.current
@@ -169,7 +171,7 @@ fun PantallaJuego(
                         }
                     }
                 }
-                // -------------------------------------------
+
 
                 AnimatedVisibility(
                     visible = resultado != null,
@@ -195,15 +197,7 @@ fun PantallaJuego(
                                     fontWeight = FontWeight.Bold,
                                     color = Color(0xFF2E7D32)
                                 )
-                                // Mensaje extra si ganas el bote
-                                if (bote > 0) {
-                                    Text(
-                                        text = "+ $bote del Bote!",
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color(0xFFE65100)
-                                    )
-                                }
+
                             }
                         }
 
@@ -339,7 +333,7 @@ fun PantallaJuego(
                                     tint = Color.DarkGray
                                 )
                             }
-                            Text(localizedString(R.string.captura_text), fontSize = 12.sp) //
+                            Text(localizedString(R.string.captura_text), fontSize = 12.sp)
                         }
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -395,6 +389,41 @@ fun PantallaJuego(
                     seleccionado = false,
                     onClick = {}
                 )
+                // PRUEBA PARA DEMOSTRAR QUE RETROFIT FUNCIONA
+
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.DarkGray.copy(alpha = 0.2f), shape = RoundedCornerShape(8.dp))
+                        .padding(8.dp)
+                ) {
+                    // botón que inicia la llamada REST
+                    AgregarBoton(
+                        onclick = { juegoViewModel.probarLlamadaRest() },
+                        icon = null,
+                        des = localizedString(R.string.desc_rest),
+                        text = localizedString(R.string.prueba_rest),
+                        fontsize = 12,
+                        modifier = Modifier.width(150.dp),
+                    )
+
+                    // El texto que muestra el resultado
+
+                    if (resultadoRest != null) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = resultadoRest!!,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
         }
     }

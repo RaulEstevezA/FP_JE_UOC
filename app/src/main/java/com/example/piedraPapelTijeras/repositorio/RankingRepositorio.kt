@@ -3,6 +3,7 @@ package com.example.piedraPapelTijeras.repositorio
 
 
 
+import android.util.Log
 import com.example.piedraPapelTijeras.data.model.JugadorFirebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -17,6 +18,8 @@ class RankingRepositorio {
     private val db = FirebaseFirestore.getInstance()
     // Referencia a la colección "jugadores"
     private val coleccionJugadores = db.collection("jugadores")
+    //referencia al bote global
+    private val docBote = db.collection("configuracion").document("bote")
 
     // Función para subir puntuación
     suspend fun subirPuntuacion(nombre: String, puntuacion: Int) {
@@ -33,7 +36,7 @@ class RankingRepositorio {
     }
 
     // Función para obtener el Top 10 de mejores jugadores
-    suspend fun obtenerTopJugadores(): List<JugadorFirebase> {
+   /* suspend fun obtenerTopJugadores(): List<JugadorFirebase> {
         return try {
             val snapshot = coleccionJugadores
                 .orderBy("puntuacion", Query.Direction.DESCENDING) // Ordenamos de mayor a menor puntuación
@@ -48,6 +51,8 @@ class RankingRepositorio {
             emptyList() // Si falla, devolvemos lista vacía para que no cierra la app
         }
     }
+    */
+
 
     // cambios en tiempo real para actulizar el ranking
     fun obtenerTopJugadoresEnTiempoReal(): Flow<List<JugadorFirebase>> =
@@ -105,19 +110,9 @@ class RankingRepositorio {
         //cierra comunicacion ahorradon datos al finalizar
         awaitClose { subscription.remove() }
     }
-    //referencia al bote global
-    private val docBote = db.collection("configuracion").document("bote")
 
-    suspend fun obtenerBote(): Int{
-        return try{
-            val snapshot = docBote.get().await()
-            //lo devolvemos si existe, sino damos 0
-            snapshot.getLong("puntos")?.toInt() ?: 0
-        }catch (e:Exception){
 
-            0
-        }
-    }
+
     //sumar puntos al botes con transacion segura
     suspend fun sumarAlBote(puntos: Int){
         try {
@@ -155,4 +150,42 @@ class RankingRepositorio {
             0
         }
     }
+    // Escuchar el bote en tiempo real (Flow)
+    fun obtenerBoteEnTiempoReal(): Flow<Int> = callbackFlow {
+        // Nos suscribimos a cambios en el documento "configuracion/bote"
+        val subscription = docBote.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                // Si el documento existe, sacamos el campo "puntos"
+                val puntos = snapshot.getLong("puntos")?.toInt() ?: 0
+                trySend(puntos)
+            } else {
+                // Si no existe el documento, asumimos que el bote es 0
+                trySend(0)
+            }
+        }
+
+        // Importante: cerrar la conexión al salir
+        awaitClose { subscription.remove() }
+    }
+
+    suspend fun actualizarUbicacion(nombre: String, latitud: Double, longitud: Double) {
+        try {
+            val datosUbicacion = mapOf(
+                "latitud" to latitud,
+                "longitud" to longitud
+            )
+            // Actualizamos solo esos campos sin borrar el resto (nombre, puntos)
+            coleccionJugadores.document(nombre).update(datosUbicacion).await()
+
+        } catch (e: Exception) {
+
+        }
+    }
+
+
 }

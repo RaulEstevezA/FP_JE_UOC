@@ -87,4 +87,11 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-auth:21.0.0")
 
+    //Retrofit y Moshi
+    // Librerías para llamadas REST
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi.kotlin)
+
+
 }

@@ -11,7 +11,7 @@ class JugadorRepositorio(private val jugadorDao: JugadorDao) {
     private val _jugadorActual = MutableStateFlow<Jugador?>(null)
     val jugadorActual: StateFlow<Jugador?> = _jugadorActual
 
-    //gardar el jugador que ha iniciado sesion
+    //guardar el jugador que ha iniciado sesion
     fun setJugadorActual(jugador: Jugador) {
         _jugadorActual.value = jugador
     }

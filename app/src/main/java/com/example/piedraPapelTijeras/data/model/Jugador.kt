@@ -10,7 +10,7 @@ data class Jugador(
     val mail: String,
     var puntuacion: Int = 0,
     var ultimaFecha: Long = 0L,
-    //variables ubicacion pueden ser null si el usuario no da permiso
+    //-- variables ubicacion pueden ser null si el usuario no da permiso --
     val latitud: Double? = null,
     val longitud: Double? = null
 
