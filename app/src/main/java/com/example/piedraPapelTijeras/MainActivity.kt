@@ -17,10 +17,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.piedraPapelTijeras.ui.componentes.BackgroundMusicPlayer
+import com.example.piedraPapelTijeras.ui.pantallas.PantallaAyuda
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaJuego
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaLogin
 import com.example.piedraPapelTijeras.ui.pantallas.PantallaPrincipal
-import com.example.piedraPapelTijeras.ui.pantallas.PantallaTop10
 import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
@@ -34,6 +34,7 @@ import android.os.Build
 import android.util.Log
 import android.os.Handler
 import android.os.Looper
+import com.example.piedraPapelTijeras.ui.pantallas.PantallaTop10
 
 class MainActivity : ComponentActivity() {
     private lateinit var juegoViewModel: JuegoViewModel
@@ -134,6 +135,13 @@ class MainActivity : ComponentActivity() {
                         composable("juego") {
                             PantallaJuego(
                                 juegoViewModel = this@MainActivity.juegoViewModel,
+                                navController = navController,
+                                musicViewModel = this@MainActivity.musicViewModel,
+                                soundPlayer = soundPlayer
+                            )
+                        }
+                        composable("ayuda") {
+                            PantallaAyuda(
                                 navController = navController,
                                 musicViewModel = this@MainActivity.musicViewModel,
                                 soundPlayer = soundPlayer

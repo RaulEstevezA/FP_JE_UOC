@@ -9,6 +9,9 @@ data class Jugador(
     val id: Int= 0,
     val mail: String,
     var puntuacion: Int = 0,
-    var ultimaFecha: Long = 0L
+    var ultimaFecha: Long = 0L,
+    //variables ubicacion pueden ser null si el usuario no da permiso
+    val latitud: Double? = null,
+    val longitud: Double? = null
 
 )

@@ -1,34 +1,90 @@
 <resources>
     <string name="app_name">PiedraPapelTijeras</string>
     <string name="PiedraPapelTijeras" />
-    <string name="jugar_desc">Enviar</string>
+
+    <!-- Buttons -->
+    <string name="jugar_desc">jugar</string>
     <string name="jugar_text">Jugar</string>
     <string name="top_10_text">Top 10</string>
+    <string name="top_10_desc">Top 10</string>
+
+    <!-- Login -->
     <string name="login_text">Login</string>
     <string name="login_textField_label">LoginLabel</string>
+
+    <!-- Moves -->
     <string name="piedra_text_desc">piedra</string>
     <string name="papel_text_desc">papel</string>
     <string name="tijeras_text_desc">tijeras</string>
+
+    <!-- Game flow -->
     <string name="tres">3</string>
     <string name="un_dos_tres">"1..2..3 piedra papel o tijeras 1...2... "</string>
-    <string name="jugada_maquina">"Elección de manitas"</string>
+    <string name="jugada_maquina">"Elección de la máquina"</string>
     <string name="interrogante_text_desc">"Interrogante"</string>
+
+    <!-- Navigation -->
     <string name="volver_text">"Volver"</string>
     <string name="volver_text_desc">"Volver"</string>
+
+    <!-- Errors -->
     <string name="error_formato">"Error de Formato"</string>
     <string name="usuario_no_registrado">"Usuario no Registrado"</string>
+
+    <!-- Dialogs -->
     <string name="aceptar">"Aceptar"</string>
     <string name="crear">"Crear"</string>
     <string name="cancelar">"Cancelar"</string>
+
+    <!-- Gameplay -->
     <string name="elige_jugada">"Elige tu jugada"</string>
     <string name="resultado_text">"Resultado"</string>
+
+    <!-- Results -->
     <string name="ganastes">"GANASTES"</string>
     <string name="perdistes">"PERDISTES"</string>
     <string name="empate">"EMPATE"</string>
+
+    <!-- General -->
     <string name="continuar_text">"Continuar"</string>
     <string name="top_text">"Top 10 Jugadores"</string>
+
+    <!-- Capture -->
     <string name="captura_text">"capturar"</string>
     <string name="captura_desc">"capturar"</string>
+
+    <!-- Calendar -->
+    <string name="calendar_text">"calendario"</string>
+    <string name="calendar_desc">"calendario"</string>
+
+
+    <!-- Help -->
+    <string name="ayuda">"Centro de Ayuda"</string>
+    <string name="reglas">"Consulta las reglas abajo 👇"</string>
+    <string name="ayuda_text">"ayuda"</string>
+    <string name="ayuda_desc">"ayuda"</string>
+
+    <!-- Music -->
+    <string name="cambiar_musica_des">"cambiar música"</string>
+    <string name="cambiar_musica_text">"cambiar música"</string>
+
+    <!-- eMail -->
+    <string name="error_correo_invalido">El correo no es válido debe ser un formato valido y gmail.</string>
+    <string name="error_usuario_no_registrado">El correo no está registrado. ¿Quieres crear un nuevo usuario?</string>
+    <string name="usuario_creado_exito">Usuario creado con éxito.</string>
+
+    <!-- top10 -->
+    <string name="ultimo_login">Último login: %1$s</string>
+    <string name="ranking_titulo">Top 10 Jugadores</string>
+
+    <string name="imagen_inicio_desc">Imagen de inicio</string>
+
+    <string name="evento_victoria_titulo">🎉 ¡Victoria en el Juego!</string>
+    <string name="evento_victoria_ubicacion">Dispositivo Android</string>
+    <string name="evento_victoria_descripcion">El jugador %1$s ganó con una puntuación de %2$d.</string>
+
+    <string name="notificacion_victoria_titulo">🏆 ¡Ganaste, %1$s!</string>
+    <string name="notificacion_victoria_mensaje">Tu nueva puntuación es %1$d. ¡Sigue así!</string>
 
 
 

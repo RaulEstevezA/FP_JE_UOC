@@ -9,11 +9,15 @@ import com.example.piedraPapelTijeras.data.dao.JugadorDao
 
 const val DATABASE_NAME = "jugadores.db"
 
-@Database(entities = [Jugador::class], version = 1, exportSchema = false)
-
+@Database(
+    entities = [Jugador::class],
+    version = 3,
+    exportSchema = false
+)
 abstract class JugadoresDatabase : RoomDatabase() {
 
     abstract val jugadorDao: JugadorDao
+
 
     companion object {
 
@@ -22,14 +26,17 @@ abstract class JugadoresDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): JugadoresDatabase {
 
-
             return Instance ?: synchronized(this) {
-                Room.databaseBuilder(context, JugadoresDatabase::class.java, DATABASE_NAME)
+
+                Room.databaseBuilder(
+                    context,
+                    JugadoresDatabase::class.java,
+                    DATABASE_NAME
+                )
+                    .fallbackToDestructiveMigration()   // evita error al añadir tabla nueva
                     .build()
                     .also { Instance = it }
             }
-
         }
     }
-
 }

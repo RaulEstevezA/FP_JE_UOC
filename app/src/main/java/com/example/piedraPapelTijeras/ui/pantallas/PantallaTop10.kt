@@ -2,15 +2,9 @@ package com.example.piedraPapelTijeras.ui.pantallas
 
 import com.example.piedraPapelTijeras.R
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,11 +20,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.piedraPapelTijeras.ui.AgregarBoton
 import com.example.piedraPapelTijeras.ui.util.SoundPlayer
-
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.ui.util.formatTimestamp
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
-
 
 @Composable
 fun PantallaTop10(
@@ -46,59 +38,74 @@ fun PantallaTop10(
 
     val top10 by top10ViewModel.top10.collectAsState()
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFFA8E6CF))
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFA8E6CF))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
+        // Título traducido
         Text(
-            text = stringResource(R.string.top_10_text),
+            text = stringResource(R.string.ranking_titulo),
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
         )
-            Text(
-                text = "Top 10 Jugadores",
-                fontSize = 40.sp,
-                modifier = Modifier.padding(16.dp)
-            )
 
-            Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-            // Lista de jugadores
-            top10.forEachIndexed { index, jugador ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
+        // Lista de jugadores
+        top10.forEachIndexed { index, jugador ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+
+                    // Nombre
+                    Text(
+                        text = "${index + 1}. ${jugador.mail}",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+
+                    // Último login traducido
+                    Text(
+                        text = stringResource(
+                            R.string.ultimo_login,
+                            formatTimestamp(jugador.ultimaFecha)
+                        ),
+                        fontSize = 14.sp,
+                        color = Color.DarkGray
+                    )
+
+                    if (jugador.latitud != null && jugador.longitud != null) {
                         Text(
-                            text = "${index + 1}. ${jugador.mail}",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            text = "Último login: ${formatTimestamp(jugador.ultimaFecha)}",
-                            fontSize = 14.sp,
-                            color = Color.DarkGray
+                            text = "📍 %.4f, %.4f".format(jugador.latitud, jugador.longitud),
+                            fontSize = 12.sp,
+                            color = Color(0xFF00695C) // Verde oscuro para diferenciarlo
                         )
                     }
-                    Text(
-                        text = jugador.puntuacion.toString(),
-                        fontSize = 24.sp
-                    )
                 }
-                Divider()
+
+                // Puntuación
+                Text(
+                    text = jugador.puntuacion.toString(),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
             }
+            HorizontalDivider(color = Color.Gray.copy(alpha = 0.5f))
+        }
 
-            Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // Botón para volver
+        // Botón volver
         AgregarBoton(
             onclick = {
                 soundPlayer.playSounds(soundPlayer.sonidoBotonId)
@@ -108,12 +115,13 @@ fun PantallaTop10(
             des = stringResource(R.string.volver_text_desc),
             text = stringResource(R.string.volver_text),
             fontsize = 40,
-            modifier = Modifier.Companion.width(200.dp)
-
-            )
-        }
-
+            modifier = Modifier.width(200.dp)
+        )
+    }
 }
+
+
+
 
 
 
