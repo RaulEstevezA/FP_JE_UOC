@@ -82,6 +82,10 @@ class JugadorRepositorio(private val jugadorDao: JugadorDao) {
             _jugadorActual.value = jugadorActualizado
         }
     }
+    //actualiza jugador la usamos para la ubicacion
+    suspend fun updateJugador(jugador: Jugador){
+        jugadorDao.update(jugador)
+    }
 
 
 }

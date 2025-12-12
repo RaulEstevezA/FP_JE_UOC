@@ -88,7 +88,7 @@ fun PantallaPrincipal(
             // pantalla inicio
             Image(
                 painter = painterResource(R.drawable.image_inicio),
-                contentDescription = null,
+                contentDescription = stringResource(R.string.imagen_inicio_desc),
                 modifier = Modifier.Companion.fillMaxWidth().size(300.dp),
             )
             Spacer(modifier = Modifier.Companion.height(50.dp))

@@ -26,4 +26,7 @@ interface JugadorDao {
     @Query("SELECT * FROM jugadores ORDER BY puntuacion DESC Limit 10")
     suspend fun obtenerTop(): List<Jugador>
 
+    @Update
+    suspend fun updateJugador(jugador: Jugador)
+
 }
