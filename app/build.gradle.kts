@@ -1,10 +1,10 @@
-
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -12,7 +12,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.pidrapapeltijera"
+        applicationId = "com.example.piedrapapeltijeras"
         minSdk = 25
         targetSdk = 36
         versionCode = 1
@@ -72,4 +72,15 @@ dependencies {
     //dependencias gps
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
+    // Import the Firebase BoM
+    implementation(platform(libs.firebase.bom))
+
+    // Firebase Authentication
+    implementation(libs.firebase.auth.ktx)
+    //
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    // https://firebase.google.com/docs/android/setup#available-libraries
 }
