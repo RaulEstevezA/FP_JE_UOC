@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 
     id("com.google.gms.google-services")
 }
@@ -40,6 +40,10 @@ android {
     buildFeatures {
         compose = true
     }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
@@ -57,11 +61,11 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation("dev.shreyaspatil:capturable:1.0.3")//para capturar imagenes
     val roomVersion = "2.6.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     implementation("androidx.compose.material:material-icons-extended-android:1.6.7")
     implementation(libs.androidx.navigation.compose)
+    ksp(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,15 +74,19 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     //dependencias gps
-    implementation("com.google.android.gms:play-services-location:21.2.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation(libs.google.play.services.auth)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
+
+    implementation(libs.play.services.location)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
 
-    // Firebase Authentication (con versión explícita)
+    // Firebase
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
 
-    implementation(libs.play.services.auth)
+    implementation(libs.firebase.firestore.ktx)
 
 }
+

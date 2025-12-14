@@ -17,6 +17,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
@@ -41,6 +42,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import java.util.Locale
 import androidx.lifecycle.ViewModelProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
 
@@ -50,7 +53,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var loginViewModel: LoginViewModel
 
     // Google Sign-In
-    private var pendingGoogleIdToken: String? = null
+    private var pendingGoogleIdToken by mutableStateOf<String?>(null)
     private lateinit var googleSignInClient: com.google.android.gms.auth.api.signin.GoogleSignInClient
     private lateinit var googleSignInLauncher: androidx.activity.result.ActivityResultLauncher<android.content.Intent>
 
@@ -119,24 +122,12 @@ class MainActivity : ComponentActivity() {
         googleSignInLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-
                     val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-
                     try {
                         val account = task.getResult(Exception::class.java)
-                        val idToken = account.idToken
-
-                        if (idToken != null) {
-                            loginViewModel.loginConGoogle(
-                                idToken = idToken,
-                                onSuccess = {
-                                    Log.d("GOOGLE_LOGIN", "Login Google correcto")
-                                }
-                            )
-                        }
-
+                        pendingGoogleIdToken = account.idToken
                     } catch (e: Exception) {
-                        Log.e("GOOGLE_SIGN_IN", "Error en Google Sign-In", e)
+                        Log.e("GOOGLE_SIGN_IN", "Error", e)
                     }
                 }
             }
@@ -146,6 +137,12 @@ class MainActivity : ComponentActivity() {
             // viewmodel de idioma
             val languageViewModel: LanguageViewModel = viewModel(
                 factory = Injeccion.provideLanguageViewModelFactory(
+                    context = applicationContext
+                )
+            )
+
+            val loginViewModel: LoginViewModel = viewModel(
+                factory = Injeccion.provideLoginViewModelFactory(
                     context = applicationContext
                 )
             )
@@ -188,12 +185,17 @@ class MainActivity : ComponentActivity() {
 
                         this@MainActivity.musicViewModel = viewModel()
 
-                        // 🔑 PUENTE REAL Google → ViewModel
+                        // PUENTE REAL Google → ViewModel
                         LaunchedEffect(pendingGoogleIdToken) {
                             pendingGoogleIdToken?.let { token ->
                                 loginViewModel.loginConGoogle(
                                     idToken = token,
-                                    onSuccess = { navController.navigate("juego") }
+                                    onSuccess = {
+                                        navController.navigate("juego")
+                                    },
+                                    onError = {
+                                        Log.e("GOOGLE_LOGIN", it)
+                                    }
                                 )
                                 pendingGoogleIdToken = null
                             }

@@ -21,6 +21,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import com.example.piedraPapelTijeras.R
+import com.example.piedraPapelTijeras.data.remote.Top10FirebaseRepository
 
 private const val PUNTOS_GANAR = 5
 private const val PUNTOS_PERDER = -5
@@ -35,6 +36,7 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
     //dar tiempo a la animacion del juego
     private val _juegoEnCurso = MutableStateFlow(false)
     val juegoEnCurso: StateFlow<Boolean> = _juegoEnCurso
+    private val top10FirebaseRepository = Top10FirebaseRepository()
 
 
     private val _puntuacion = MutableStateFlow(0)
@@ -87,12 +89,19 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
 
                 when (resultadoEnum) {
                     EnumResultado.GANASTES -> {
-                        val nombreJugador = _jugadorActual.value?.mail ?: "Jugador Anónimo"
+                        val emailJugador = _jugadorActual.value?.mail ?: return@launch
                         val puntuacionFinal = _puntuacion.value + PUNTOS_GANAR
-                        //saveWinToCalendar(nombreJugador, puntuacionFinal)
-                        sendWinNotification(nombreJugador, puntuacionFinal)
+
+                        // Guardar puntuación en Firebase
+                        top10FirebaseRepository.guardarPuntuacion(
+                            email = emailJugador,
+                            puntos = puntuacionFinal
+                        )
+
+                        sendWinNotification(emailJugador, puntuacionFinal)
                         modificarPuntos(PUNTOS_GANAR)
                     }
+
                     EnumResultado.PERDISTES -> modificarPuntos(PUNTOS_PERDER)
                     EnumResultado.EMPATE -> modificarPuntos(0)
                 }
