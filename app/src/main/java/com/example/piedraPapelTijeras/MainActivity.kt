@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -36,13 +37,22 @@ import com.example.piedraPapelTijeras.viewmodel.LanguageViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import java.util.Locale
+import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var juegoViewModel: JuegoViewModel
     private lateinit var musicViewModel: MusicViewModel
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var loginViewModel: LoginViewModel
+
+    // Google Sign-In
+    private var pendingGoogleIdToken: String? = null
+    private lateinit var googleSignInClient: com.google.android.gms.auth.api.signin.GoogleSignInClient
+    private lateinit var googleSignInLauncher: androidx.activity.result.ActivityResultLauncher<android.content.Intent>
 
     // permiso calendario
     private val requestPermissionLauncher = registerForActivityResult(
@@ -88,6 +98,48 @@ class MainActivity : ComponentActivity() {
                 requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+
+        loginViewModel = ViewModelProvider(
+            this,
+            Injeccion.provideLoginViewModelFactory(
+                context = applicationContext
+            )
+        )[LoginViewModel::class.java]
+
+        // Google Sign-In client
+        googleSignInClient = GoogleSignIn.getClient(
+            this,
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        )
+
+        // Google Sign-In launcher
+        googleSignInLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+                    try {
+                        val account = task.getResult(Exception::class.java)
+                        val idToken = account.idToken
+
+                        if (idToken != null) {
+                            loginViewModel.loginConGoogle(
+                                idToken = idToken,
+                                onSuccess = {
+                                    Log.d("GOOGLE_LOGIN", "Login Google correcto")
+                                }
+                            )
+                        }
+
+                    } catch (e: Exception) {
+                        Log.e("GOOGLE_SIGN_IN", "Error en Google Sign-In", e)
+                    }
+                }
+            }
 
         setContent {
 
@@ -136,6 +188,17 @@ class MainActivity : ComponentActivity() {
 
                         this@MainActivity.musicViewModel = viewModel()
 
+                        // 🔑 PUENTE REAL Google → ViewModel
+                        LaunchedEffect(pendingGoogleIdToken) {
+                            pendingGoogleIdToken?.let { token ->
+                                loginViewModel.loginConGoogle(
+                                    idToken = token,
+                                    onSuccess = { navController.navigate("juego") }
+                                )
+                                pendingGoogleIdToken = null
+                            }
+                        }
+
                         BackgroundMusicPlayer(musicViewModel = musicViewModel)
 
                         val soundPlayer = remember { SoundPlayer(applicationContext) }
@@ -162,7 +225,14 @@ class MainActivity : ComponentActivity() {
                                     top10ViewModel = top10ViewModel,
                                     navController = navController,
                                     musicViewModel = musicViewModel,
-                                    soundPlayer = soundPlayer
+                                    soundPlayer = soundPlayer,
+                                    onGoogleLoginClick = {
+                                        googleSignInClient.signOut().addOnCompleteListener {
+                                            googleSignInLauncher.launch(
+                                                googleSignInClient.signInIntent
+                                            )
+                                        }
+                                    }
                                 )
                             }
                             composable("juego") {

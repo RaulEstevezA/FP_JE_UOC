@@ -19,3 +19,6 @@ local.properties
 captures/
 .cxx/
 *.iml
+
+# Firebase
+google-services.json

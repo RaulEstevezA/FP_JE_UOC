@@ -88,4 +88,8 @@
 
     <string name="cambiar_idioma">Change language</string>
     <string name="change_language">Change language</string>
+
+    <string name="login_google">Login Google</string>
+
+    <string name="default_web_client_id">388413864186-pklc8ue5e74r1sqeq5252kc42k363350.apps.googleusercontent.com</string>
 </resources>

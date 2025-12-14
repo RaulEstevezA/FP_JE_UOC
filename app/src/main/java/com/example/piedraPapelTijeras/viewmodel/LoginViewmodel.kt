@@ -12,6 +12,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.example.piedraPapelTijeras.data.auth.FirebaseAuthManager
 
 class LoginViewModel(
     private val repositorio: JugadorRepositorio,
@@ -19,7 +22,10 @@ class LoginViewModel(
 ) : ViewModel() {
 
     private val _invalidoEmailDialogo = MutableStateFlow(false)
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseAuthManager = FirebaseAuthManager()
     val invalidoEmailDialogo: StateFlow<Boolean> = _invalidoEmailDialogo
+
 
     private val _usuarioNoEncontrado = MutableStateFlow(false)
     val usuarioNoEncontrado: StateFlow<Boolean> = _usuarioNoEncontrado
@@ -88,6 +94,40 @@ class LoginViewModel(
             delay(1500)
             _usuarioNoEncontrado.value = false
             onJuegoNavigate()
+        }
+    }
+
+    fun loginConGoogle(
+        idToken: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = firebaseAuthManager.signInWithGoogle(idToken)
+
+            result
+                .onSuccess { email ->
+                    // reutilizamos tu lógica actual
+                    viewModelScope.launch {
+                        val jugador = repositorio.obtenerJugador(email)
+
+                        if (jugador != null) {
+                            repositorio.setJugadorActual(jugador)
+                            repositorio.actualizarUltimaFecha()
+                            onSuccess()
+                        } else {
+                            // crear jugador automáticamente si viene de Google
+                            añadirJugador(
+                                email = email,
+                                onJuegoNavigate = onSuccess,
+                                onTop10Refresh = {}
+                            )
+                        }
+                    }
+                }
+                .onFailure {
+                    onError(it.message ?: "Error login Google")
+                }
         }
     }
 

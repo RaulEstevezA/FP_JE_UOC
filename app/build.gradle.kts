@@ -73,14 +73,12 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
-    // Import the Firebase BoM
+    // Firebase
     implementation(platform(libs.firebase.bom))
 
-    // Firebase Authentication
+    // Firebase Authentication (con versión explícita)
     implementation(libs.firebase.auth.ktx)
-    //
 
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
-    // https://firebase.google.com/docs/android/setup#available-libraries
+    implementation(libs.play.services.auth)
+
 }

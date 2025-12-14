@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,7 +31,8 @@ fun PantallaLogin(
     top10ViewModel: Top10Viewmodel,
     navController: NavHostController,
     musicViewModel: MusicViewModel,
-    soundPlayer: SoundPlayer
+    soundPlayer: SoundPlayer,
+    onGoogleLoginClick: () -> Unit
 ) {
 
 
@@ -102,6 +104,20 @@ fun PantallaLogin(
                 des = localizedString(R.string.jugar_desc),
                 text = localizedString(R.string.login_text),
                 modifier = Modifier.width(200.dp)
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // BOTÓN LOGIN Google
+            AgregarBoton(
+                onclick = {
+                    soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                    onGoogleLoginClick()
+                },
+                icon = Icons.Default.AccountCircle,
+                des = localizedString(R.string.login_google),
+                text = localizedString(R.string.login_google),
+                modifier = Modifier.width(220.dp)
             )
 
 
