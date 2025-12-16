@@ -11,7 +11,7 @@ const val DATABASE_NAME = "jugadores.db"
 
 @Database(
     entities = [Jugador::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class JugadoresDatabase : RoomDatabase() {

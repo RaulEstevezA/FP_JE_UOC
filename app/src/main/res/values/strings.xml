@@ -94,4 +94,7 @@
 
     <string name="default_web_client_id">388413864186-pklc8ue5e74r1sqeq5252kc42k363350.apps.googleusercontent.com</string>
 
+    <string name="ver_bote">Bote común</string>
+    <string name="ver_bote_desc">Acceder al bote común</string>
+    <string name="bote_actual">Bote actual: %1$d</string>
 </resources>

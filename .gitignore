@@ -22,3 +22,7 @@ captures/
 
 # Firebase
 google-services.json
+
+# Firebase / Firestore local config
+#firestore_project_id.properties
+#.env

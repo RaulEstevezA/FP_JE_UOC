@@ -22,6 +22,7 @@ import android.app.NotificationManager
 import android.os.Build
 import com.example.piedraPapelTijeras.R
 import com.example.piedraPapelTijeras.data.remote.Top10FirebaseRepository
+import com.example.piedraPapelTijeras.data.remote.PremioComunFirebaseRepository
 
 private const val PUNTOS_GANAR = 5
 private const val PUNTOS_PERDER = -5
@@ -37,7 +38,7 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
     private val _juegoEnCurso = MutableStateFlow(false)
     val juegoEnCurso: StateFlow<Boolean> = _juegoEnCurso
     private val top10FirebaseRepository = Top10FirebaseRepository()
-
+    private val premioComunFirebaseRepository = PremioComunFirebaseRepository()
 
     private val _puntuacion = MutableStateFlow(0)
     val puntuacion: StateFlow<Int> = _puntuacion
@@ -54,7 +55,11 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
         viewModelScope.launch {
             repositorio.jugadorActual.collect { jugador ->
                 _jugadorActual.value = jugador
-                _puntuacion.value = jugador?.puntuacion ?: 0
+
+                // SOLO inicializar si aún no se ha tocado
+                if (jugador != null && _puntuacion.value == 0) {
+                    _puntuacion.value = jugador.puntuacion
+                }
             }
         }
     }
@@ -89,21 +94,65 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
 
                 when (resultadoEnum) {
                     EnumResultado.GANASTES -> {
-                        val emailJugador = _jugadorActual.value?.mail ?: return@launch
-                        val puntuacionFinal = _puntuacion.value + PUNTOS_GANAR
+                        val jugador = _jugadorActual.value ?: return@launch
 
-                        // Guardar puntuación en Firebase
-                        top10FirebaseRepository.guardarPuntuacion(
-                            email = emailJugador,
-                            puntos = puntuacionFinal
+                        val nuevasVictorias = jugador.victoriasConsecutivas + 1
+                        val puntuacionBase = _puntuacion.value + PUNTOS_GANAR
+
+                        // ¿ha ganado el bote?
+                        val premio = if (nuevasVictorias >= 3) {
+                            premioComunFirebaseRepository.reclamarBote()
+                        } else {
+                            0
+                        }
+
+                        val jugadorActualizado = jugador.copy(
+                            puntuacion = puntuacionBase + premio,
+                            victoriasConsecutivas = if (nuevasVictorias >= 3) 0 else nuevasVictorias,
+                            ultimaFecha = System.currentTimeMillis()
                         )
 
-                        sendWinNotification(emailJugador, puntuacionFinal)
-                        modificarPuntos(PUNTOS_GANAR)
+                        // Firebase
+                        top10FirebaseRepository.guardarJugador(jugadorActualizado)
+
+                        // Room
+                        repositorio.actualizarPuntuacion(jugadorActualizado)
+
+                        // Estado en memoria
+                        _jugadorActual.value = jugadorActualizado
+
+                        // 🔑 CLAVE: actualizar la puntuación observable
+                        _puntuacion.value = jugadorActualizado.puntuacion
                     }
 
-                    EnumResultado.PERDISTES -> modificarPuntos(PUNTOS_PERDER)
-                    EnumResultado.EMPATE -> modificarPuntos(0)
+                    EnumResultado.PERDISTES -> {
+                        val jugador = _jugadorActual.value ?: return@launch
+
+                        val nuevaPuntuacion = (_puntuacion.value + PUNTOS_PERDER).coerceAtLeast(0)
+
+                        val jugadorActualizado = jugador.copy(
+                            puntuacion = nuevaPuntuacion,
+                            victoriasConsecutivas = 0, // se pierde la racha
+                            ultimaFecha = System.currentTimeMillis()
+                        )
+
+                        // Firebase
+                        top10FirebaseRepository.guardarJugador(jugadorActualizado)
+
+                        // Bote común
+                        premioComunFirebaseRepository.sumarAlBote(3)
+
+                        // Room
+                        repositorio.actualizarPuntuacion(jugadorActualizado)
+
+                        // Estado en memoria
+                        _jugadorActual.value = jugadorActualizado
+
+                        // 🔑 CLAVE: actualizar la puntuación observable
+                        _puntuacion.value = nuevaPuntuacion
+                    }
+
+                    EnumResultado.EMPATE -> {}
                 }
 
 
@@ -282,9 +331,3 @@ class JuegoViewModel(private val repositorio: JugadorRepositorio, private val to
         }
     }
 }
-
-
-
-
-
-

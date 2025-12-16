@@ -1,0 +1,31 @@
+/*
+ ================================
+ FIRESTORE PROJECT ID
+ ================================
+
+ ESPAÑOL
+ Sustituye "YOUR_PROJECT_ID" por el ID real de tu proyecto Firebase.
+
+ Ejemplo:
+ projects/piedrapapeltijeras-2b616/databases/(default)/documents/premio_comun/bote
+
+ Pasos para obtener el Project ID:
+ 1. Entra en https://console.firebase.google.com
+ 2. Selecciona tu proyecto
+ 3. ⚙️ Configuración del proyecto
+ 4. Copia el campo "ID del proyecto"
+
+ --------------------------------
+
+ ENGLISH
+ Replace "YOUR_PROJECT_ID" with your real Firebase Project ID.
+
+ Example:
+ projects/piedrapapeltijeras-2b616/databases/(default)/documents/premio_comun/bote
+
+ Steps to obtain the Project ID:
+ 1. Go to https://console.firebase.google.com
+ 2. Select your project
+ 3. ⚙️ Project settings
+ 4. Copy the "Project ID"
+*/

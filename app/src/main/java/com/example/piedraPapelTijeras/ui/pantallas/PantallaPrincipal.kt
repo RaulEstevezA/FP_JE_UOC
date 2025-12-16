@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.HelpCenter
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -124,7 +125,7 @@ fun PantallaPrincipal(
                     soundPlayer.playSounds(soundPlayer.sonidoBotonId)
                     navController.navigate("top10")
                 },
-                icon = Icons.AutoMirrored.Filled.Send,
+                icon = Icons.Default.EmojiEvents,
                 des = localizedString(R.string.top_10_desc),
                 text = localizedString(R.string.top_10_text),
                 modifier = Modifier.width(200.dp)

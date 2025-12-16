@@ -88,5 +88,8 @@ dependencies {
 
     implementation(libs.firebase.firestore.ktx)
 
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
 }
 

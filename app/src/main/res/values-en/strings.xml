@@ -92,4 +92,8 @@
     <string name="login_google">Login Google</string>
 
     <string name="default_web_client_id">388413864186-pklc8ue5e74r1sqeq5252kc42k363350.apps.googleusercontent.com</string>
+
+    <string name="ver_bote">Shared pot</string>
+    <string name="ver_bote_desc">Access the shared pot</string>
+    <string name="bote_actual">Current pot: %1$d</string>
 </resources>

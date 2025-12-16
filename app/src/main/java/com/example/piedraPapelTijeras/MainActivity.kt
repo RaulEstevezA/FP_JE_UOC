@@ -44,6 +44,8 @@ import java.util.Locale
 import androidx.lifecycle.ViewModelProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.example.piedraPapelTijeras.ui.pantallas.PantallaBoteComun
+import com.example.piedraPapelTijeras.viewmodel.BoteComunViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -153,6 +155,9 @@ class MainActivity : ComponentActivity() {
             val currentLocale =
                 if (idiomaState.value.name == "ES") Locale("es") else Locale("en")
 
+            val boteComunViewModel: BoteComunViewModel =
+                viewModel(factory = Injeccion.provideBoteComunViewModelFactory())
+
             CompositionLocalProvider(
                 LocalAppLocale provides currentLocale
             ) {
@@ -257,6 +262,13 @@ class MainActivity : ComponentActivity() {
                                 PantallaAyuda(
                                     navController = navController,
                                     musicViewModel = musicViewModel,
+                                    soundPlayer = soundPlayer
+                                )
+                            }
+                            composable("bote") {
+                                PantallaBoteComun(
+                                    navController = navController,
+                                    viewModel = boteComunViewModel,
                                     soundPlayer = soundPlayer
                                 )
                             }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Paid
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -75,7 +76,8 @@ fun PantallaLogin(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-
+            // lo dejamos comentado para no duplicar la creacion de jugadores.
+            /*
             //  CAMPO LOGIN
             TextField(
                 value = textLogin,
@@ -87,6 +89,7 @@ fun PantallaLogin(
                 ),
                 label = { Text(localizedString(R.string.login_textField_label)) }
             )
+
 
             Spacer(modifier = Modifier.height(50.dp))
 
@@ -106,6 +109,8 @@ fun PantallaLogin(
                 modifier = Modifier.width(200.dp)
             )
 
+             */
+
             Spacer(modifier = Modifier.height(20.dp))
 
             // BOTÓN LOGIN Google
@@ -117,6 +122,20 @@ fun PantallaLogin(
                 icon = Icons.Default.AccountCircle,
                 des = localizedString(R.string.login_google),
                 text = localizedString(R.string.login_google),
+                modifier = Modifier.width(220.dp)
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // BOTÓN VER BOTE COMÚN
+            AgregarBoton(
+                onclick = {
+                    soundPlayer.playSounds(soundPlayer.sonidoBotonId)
+                    navController.navigate("bote")
+                },
+                icon = Icons.Default.Paid, // icono distinto al login
+                des = localizedString(R.string.ver_bote_desc),
+                text = localizedString(R.string.ver_bote),
                 modifier = Modifier.width(220.dp)
             )
 
@@ -184,3 +203,5 @@ fun PantallaLogin(
 @Preview(showBackground = true)
 @Composable
 fun PreviewPantallaLogin() {}
+
+
