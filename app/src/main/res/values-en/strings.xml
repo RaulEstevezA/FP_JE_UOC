@@ -9,8 +9,8 @@
     <string name="top_10_desc">Top 10</string>
 
     <!-- Login -->
-    <string name="login_text">Login</string>
-    <string name="login_textField_label">Email</string>
+    <string name="login_text">Sign in with Google</string>
+
 
     <!-- Moves -->
     <string name="piedra_text_desc">rock</string>
@@ -39,6 +39,7 @@
     <!-- Gameplay -->
     <string name="elige_jugada">Choose your move</string>
     <string name="resultado_text">Result</string>
+    <string name="bote_text">"💰 JACKPOT: "</string>
 
     <!-- Results -->
     <string name="ganastes">YOU WON</string>
@@ -75,6 +76,13 @@
     <!-- top10 -->
     <string name="ultimo_login">Last login: %1$s</string>
     <string name="ranking_titulo">Top 10 Players</string>
+
+    <!-- REST -->
+
+    <string name="prueba_rest">Try REST</string>
+    <string name="desc_rest">Try REST</string>
+
+
 
 
     <string name="imagen_inicio_desc">Start screen image</string>

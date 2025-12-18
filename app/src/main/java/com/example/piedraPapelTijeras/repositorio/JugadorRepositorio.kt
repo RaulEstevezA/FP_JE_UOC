@@ -11,7 +11,7 @@ class JugadorRepositorio(private val jugadorDao: JugadorDao) {
     private val _jugadorActual = MutableStateFlow<Jugador?>(null)
     val jugadorActual: StateFlow<Jugador?> = _jugadorActual
 
-    //gardar el jugador que ha iniciado sesion
+    //guardar el jugador que ha iniciado sesion
     fun setJugadorActual(jugador: Jugador) {
         _jugadorActual.value = jugador
     }
@@ -39,16 +39,16 @@ class JugadorRepositorio(private val jugadorDao: JugadorDao) {
         val jugador = _jugadorActual.value
 
         if (jugador != null) {
-            // 1. Crear una copia del jugador con la nueva puntuación
+            // Crear una copia del jugador con la nueva puntuación
             val jugadorActualizado = jugador.copy(
                 puntuacion = jugador.puntuacion + 1,
                 ultimaFecha = System.currentTimeMillis() // Opcional: actualizar la fecha
             )
 
-            // 2. Actualizar la base de datos
+            // Actualizar la base de datos
             actualizarPuntuacion(jugadorActualizado)
 
-            // 3. Actualizar el StateFlow para que otras partes de la app (como la UI del juego) lo vean
+            // Actualizar el StateFlow para que otras partes de la app (como la UI del juego) lo vean
             _jugadorActual.value = jugadorActualizado
         }
     }

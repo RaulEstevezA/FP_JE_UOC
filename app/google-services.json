@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "868785434372",
+    "project_id": "piedrapapeltijera-60fb9",
+    "storage_bucket": "piedrapapeltijera-60fb9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868785434372:android:d01caabfbad75ec7386a51",
+        "android_client_info": {
+          "package_name": "com.example.piedraPapelTijeras"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868785434372-u9tbr98ug49paqhsef2nu3b73e52bp9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.piedraPapelTijeras",
+            "certificate_hash": "e8fd8ea6aa4086d8fcfda2697ebd4496918d7627"
+          }
+        },
+        {
+          "client_id": "868785434372-12tmldqkioi3l14qjqq3ejs4uom058fg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn-TDgO_PWn-ZKlZacW_6qiS5UPfleqkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868785434372-12tmldqkioi3l14qjqq3ejs4uom058fg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

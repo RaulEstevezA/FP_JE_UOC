@@ -104,7 +104,7 @@ fun PantallaPrincipal(
                     .size(300.dp)
             )
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             AgregarBoton(
                 onclick = {
@@ -117,7 +117,7 @@ fun PantallaPrincipal(
                 modifier = Modifier.width(200.dp)
             )
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             AgregarBoton(
                 onclick = {
@@ -130,7 +130,7 @@ fun PantallaPrincipal(
                 modifier = Modifier.width(200.dp)
             )
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             AgregarBoton(
                 onclick = {
