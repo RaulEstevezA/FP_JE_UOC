@@ -35,6 +35,7 @@ import com.example.piedraPapelTijeras.viewmodel.JuegoViewModel
 import com.example.piedraPapelTijeras.viewmodel.LanguageViewModel
 import com.example.piedraPapelTijeras.viewmodel.LoginViewModel
 import com.example.piedraPapelTijeras.viewmodel.MusicViewModel
+import com.example.piedraPapelTijeras.viewmodel.RankingViewModel
 import com.example.piedraPapelTijeras.viewmodel.Top10Viewmodel
 import java.util.Locale
 
@@ -97,6 +98,7 @@ class MainActivity : ComponentActivity() {
                     context = applicationContext
                 )
             )
+            val rankingViewModel: RankingViewModel = viewModel()//Firebase
 
             val idiomaState = languageViewModel.idiomaActual.collectAsState()
 
@@ -123,8 +125,8 @@ class MainActivity : ComponentActivity() {
 
                         this@MainActivity.juegoViewModel = viewModel(
                             factory = Injeccion.provideJuegoViewModelFactory(
-                                context = applicationContext,
-                                top10ViewModel = top10ViewModel
+                                context = applicationContext
+
                             )
                         )
 
@@ -175,7 +177,8 @@ class MainActivity : ComponentActivity() {
                             }
                             composable("top10") {
                                 PantallaTop10(
-                                    top10ViewModel = top10ViewModel,
+                                    //top10ViewModel = top10ViewModel,//sql lite
+                                    rankingViewModel = rankingViewModel,//FireBase
                                     navController = navController,
                                     musicViewModel = musicViewModel,
                                     soundPlayer = soundPlayer

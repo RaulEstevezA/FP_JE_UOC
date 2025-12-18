@@ -28,7 +28,7 @@ object Injeccion {
         }
     }
 
-    fun provideJuegoViewModelFactory(context: Context, top10ViewModel: Top10Viewmodel): ViewModelProvider.Factory {
+    fun provideJuegoViewModelFactory(context: Context): ViewModelProvider.Factory {
 
         return object : ViewModelProvider.Factory {
 
@@ -39,7 +39,7 @@ object Injeccion {
 
                     val repositorio = provideJugadorRepositorio(context)
                     @Suppress("UNCHECKED_CAST")
-                    return JuegoViewModel(repositorio = repositorio, top10Viewmodel = top10ViewModel, context = context) as T
+                    return JuegoViewModel(repositorio, context) as T
                 }
 
 

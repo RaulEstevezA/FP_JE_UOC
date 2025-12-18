@@ -1,10 +1,13 @@
 
 
 plugins {
-    alias(libs.plugins.android.application)
+
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+   //plugin firebase
+    id("com.google.gms.google-services")
+    id("com.android.application")
 }
 
 android {
@@ -12,7 +15,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.pidrapapeltijera"
+        applicationId = "com.example.piedraPapelTijeras"
         minSdk = 25
         targetSdk = 36
         versionCode = 1
@@ -72,4 +75,23 @@ dependencies {
     //dependencias gps
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
+    // FIREBASE
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.config)
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-auth")
+
+    //autentificacion cuanta google
+
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+
+    //Retrofit y Moshi
+    // Librerías para llamadas REST
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi.kotlin)
+
+
 }

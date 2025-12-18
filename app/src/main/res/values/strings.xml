@@ -9,8 +9,8 @@
     <string name="top_10_desc">Top 10</string>
 
     <!-- Login -->
-    <string name="login_text">Login</string>
-    <string name="login_textField_label">LoginLabel</string>
+    <string name="login_text">Entrar con Google</string>
+
 
     <!-- Moves -->
     <string name="piedra_text_desc">piedra</string>
@@ -39,6 +39,8 @@
     <!-- Gameplay -->
     <string name="elige_jugada">"Elige tu jugada"</string>
     <string name="resultado_text">"Resultado"</string>
+    <string name="bote_text">"💰 BOTE: "</string>
+
 
     <!-- Results -->
     <string name="ganastes">"GANASTES"</string>
@@ -77,6 +79,17 @@
     <string name="ultimo_login">Último login: %1$s</string>
     <string name="ranking_titulo">Top 10 Jugadores</string>
 
+    <!-- REST -->
+
+    <string name="prueba_rest">Probar REST</string>
+    <string name="desc_rest">Probar REST</string>
+
+    <!-- En strings.xml -->
+    <string name="mensaje_bote_rest">El bote actual es: %1$s</string>
+
+
+
+
     <string name="imagen_inicio_desc">Imagen de inicio</string>
 
     <string name="evento_victoria_titulo">🎉 ¡Victoria en el Juego!</string>
@@ -89,5 +102,7 @@
 
     <string name="cambiar_idioma">Cambiar idioma</string>
     <string name="change_language">Change language</string>
+
+
 
 </resources>
