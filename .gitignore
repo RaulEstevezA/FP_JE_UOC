@@ -19,3 +19,5 @@ local.properties
 captures/
 .cxx/
 *.iml
+
+app/google-services.json
